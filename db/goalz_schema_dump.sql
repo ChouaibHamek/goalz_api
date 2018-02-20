@@ -12,19 +12,19 @@ CREATE TABLE IF NOT EXISTS user_profile(
   lastname TEXT,
   email TEXT,
   website TEXT,
-  rating INTEGER,
+  rating REAL,
   age INTEGER,
   gender TEXT,
   FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
 CREATE TABLE IF NOT EXISTS goals(
   goal_id INTEGER,
   parent_id INTEGER,
+  user_id INTEGER,
   title TEXT,
   topic TEXT,
   description TEXT,
   deadline INTEGER,
   status INTEGER,
-  user_id INTEGER,
   FOREIGN KEY(parent_id) REFERENCES goals(goal_id) ON DELETE CASCADE),
   FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
 CREATE TABLE IF NOT EXISTS resources(
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS resources(
   topic TEXT,
   description TEXT,
   required_time INTEGER,
-  rating INTEGER,
+  rating REAL,
   FOREIGN KEY(goal_id) REFERENCES goals(goal_id) ON DELETE CASCADE,
   FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE SET NULL);
 COMMIT;
