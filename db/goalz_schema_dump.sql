@@ -18,12 +18,14 @@ CREATE TABLE IF NOT EXISTS user_profile(
   FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
 CREATE TABLE IF NOT EXISTS goals(
   goal_id INTEGER,
+  parent_id INTEGER,
   title TEXT,
   topic TEXT,
   description TEXT,
-  deadline TEXT,
+  deadline INTEGER,
   status INTEGER,
   user_id INTEGER,
+  FOREIGN KEY(parent_id) REFERENCES goals(goal_id) ON DELETE CASCADE),
   FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
 CREATE TABLE IF NOT EXISTS resources(
   resource_id INTEGER PRIMARY KEY,
@@ -33,14 +35,9 @@ CREATE TABLE IF NOT EXISTS resources(
   link TEXT,
   topic TEXT,
   description TEXT,
-  register_date TEXT,
+  required_time INTEGER,
   rating INTEGER,
   FOREIGN KEY(goal_id) REFERENCES goals(goal_id) ON DELETE CASCADE,
   FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE SET NULL);
-CREATE TABLE IF NOT EXISTS goals_subgoals(
-  goal_id INTEGER,
-  subgoal_id INTEGER,
-  FOREIGN KEY(goal_id) REFERENCES goals(goal_id) ON DELETE SET NULL,
-  FOREIGN KEY(subgoal_id) REFERENCES users(user_id) ON DELETE SET NULL);
 COMMIT;
 PRAGMA foreign_keys=ON;
