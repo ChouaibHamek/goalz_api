@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS goals(
   description TEXT,
   deadline INTEGER,
   status INTEGER,
-  FOREIGN KEY(parent_id) REFERENCES goals(goal_id) ON DELETE CASCADE),
+  FOREIGN KEY(parent_id) REFERENCES goals(goal_id) ON DELETE CASCADE,
   FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
 CREATE TABLE IF NOT EXISTS resources(
   resource_id INTEGER PRIMARY KEY,
