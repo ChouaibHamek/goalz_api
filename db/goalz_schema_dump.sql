@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS user_profile(
   gender TEXT,
   FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
 CREATE TABLE IF NOT EXISTS goals(
-  goal_id INTEGER,
+  goal_id INTEGER PRIMARY KEY,
   parent_id INTEGER,
   user_id INTEGER,
   title TEXT,
