@@ -16,3 +16,46 @@ SQL_DELETE_USERS_DATA = "DELETE FROM users"
 SQL_DELETE_USERS_PROFILE_DATA = "DELETE FROM user_profile"
 SQL_DELETE_GOALS_DATA = "DELETE FROM goals"
 SQL_DELETE_RESOURCES_DATA = "DELETE FROM resources"
+SQL_CREATE_USERS_TABLE = \
+    'CREATE TABLE  users( \
+      user_id INTEGER PRIMARY KEY,\
+      nickname TEXT UNIQUE,\
+      registration_date INTEGER,\
+      password TEXT)'
+SQL_CREATE_USER_PROFILE_TABLE = \
+    'CREATE TABLE user_profile( \
+      user_profile_id INTEGER PRIMARY KEY,\
+      user_id INTEGER,\
+      firstname TEXT,\
+      lastname TEXT,\
+      email TEXT,\
+      website TEXT,\
+      rating REAL,\
+      age INTEGER,\
+      gender TEXT,\
+      FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE)'
+SQL_CREATE_GOALS_TABLE = \
+    'CREATE TABLE goals( \
+      goal_id INTEGER,\
+      parent_id INTEGER,\
+      user_id INTEGER,\
+      title TEXT,\
+      topic TEXT,\
+      description TEXT,\
+      deadline INTEGER,\
+      status INTEGER,\
+      FOREIGN KEY(parent_id) REFERENCES goals(goal_id) ON DELETE CASCADE,\
+      FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE)'
+SQL_CREATE_RESOURCE_TABLE = \
+    'CREATE TABLE IF NOT EXISTS resources(\
+      resource_id INTEGER PRIMARY KEY,\
+      goal_id INTEGER,\
+      user_id INTEGER,\
+      title TEXT,\
+      link TEXT,\
+      topic TEXT,\
+      description TEXT,\
+      required_time INTEGER,\
+      rating REAL,\
+      FOREIGN KEY(goal_id) REFERENCES goals(goal_id) ON DELETE CASCADE,\
+      FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE SET NULL)'
