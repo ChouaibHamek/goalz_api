@@ -119,5 +119,7 @@ class Engine(object):
         # Remove data from database
         with con:
             cur = con.cursor()
-            # TODO : ADD REMOVE INSTRUCTIONS FOR EACH TABLE
-            # cur.execute("DELETE FROM <table>")
+            cur.execute(constants.SQL_DELETE_RESOURCES_DATA)
+            cur.execute(constants.SQL_DELETE_GOALS_DATA)
+            cur.execute(constants.SQL_DELETE_USERS_PROFILE_DATA)
+            cur.execute(constants.SQL_DELETE_USERS_DATA)
