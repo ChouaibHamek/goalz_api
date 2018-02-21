@@ -1,3 +1,9 @@
+/*
+  This file contain the db schema
+
+  If this file is modified make sure the changes are propagated also
+  to "db/goalz_data_dump.sql" and "src/db/constants.py"
+ */
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS users(
