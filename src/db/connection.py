@@ -104,4 +104,108 @@ class Connection(object):
             print("Error %s:" % excp.args[0])
             return False
 
-    # TODO: Add methods to manage Db data and helpers to translate that data to python dictionaries
+    # TODO: Implement user methods
+    # USER METHODS
+    # this methods represent the db api. A description should be provided and the
+    # execution should be delegated to a separate class which deals with user
+    # db management (can be an inner class)
+    #
+    # new methods should be added if required
+    def get_user(self, user):
+        raise NotImplementedError("")
+
+    def get_user(self, user_id):
+        raise NotImplementedError("")
+
+    def get_users(self):
+        raise NotImplementedError("")
+
+    def delete_user(self, user_id):
+        raise NotImplementedError("")
+
+    def modify_user(self):
+        # NOTE: this method should have more parameters (check exercises)
+        raise NotImplementedError("")
+
+    def create_user(self):
+        # NOTE: this method should have more parameters (check exercises)
+        raise NotImplementedError("")
+
+    # HELPERS FOR USERS
+    # this methods should be in a separate class which deals with user db management (can be an inner class)
+    def _create_user_object(self, row):
+        # Transforms db row to python dictionary
+        raise NotImplementedError("")
+
+    def _create_user_list_object(self, row):
+        # Transforms db row to python dictionary
+        raise NotImplementedError("")
+
+    # TODO: Implement goals methods
+    # GOAL METHODS
+    # this methods represent the db api. A description should be provided and the
+    # execution should be delegated to a separate class which deals with goals
+    # db management (can be an inner class)
+    #
+    # new methods should be added if required
+    def get_goal(self, user):
+        raise NotImplementedError("")
+
+    def get_goals(self, user_id=None):
+        raise NotImplementedError("")
+
+    def delete_goal(self, user_id):
+        raise NotImplementedError("")
+
+    def modify_goal(self):
+        # NOTE: this method should have more parameters (check exercises)
+        raise NotImplementedError("")
+
+    def create_goal(self):
+        # NOTE: this method should have more parameters (check exercises)
+        raise NotImplementedError("")
+
+    # HELPERS FOR GOALS
+    # this methods should be in a separate class which deals with user db management (can be an inner class)
+    def _create_goal_object(self, row):
+        # Transforms db row to python dictionary
+        raise NotImplementedError("")
+
+    def _create_goal_list_object(self, row):
+        # Transforms db row to python dictionary
+        raise NotImplementedError("")
+
+    # TODO: Implement resource methods
+    # RESOURCE METHODS
+    # this methods represent the db api. A description should be provided and the
+    # execution should be delegated to a separate class which deals with resources
+    # db management (can be an inner class)
+    #
+    # new methods should be added if required
+    def get_resource(self, user):
+        raise NotImplementedError("")
+
+    def get_resources(self, user_id=None):
+        raise NotImplementedError("")
+
+    def delete_resource(self, user_id):
+        raise NotImplementedError("")
+
+    def modify_resource(self):
+        # NOTE: this method should have more parameters (check exercises)
+        # NOTE: the resource cannot be modified, only their rating
+        raise NotImplementedError("")
+
+    def create_resource(self):
+        # NOTE: this method should have more parameters (check exercises)
+        raise NotImplementedError("")
+
+    # HELPERS FOR GOALS
+    # this methods should be in a separate class which deals with user db management (can be an inner class)
+    def _create_resource_object(self, row):
+        # Transforms db row to python dictionary
+        raise NotImplementedError("")
+
+    def _create_resource_list_object(self, row):
+        # Transforms db row to python dictionary
+        raise NotImplementedError("")
