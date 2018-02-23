@@ -3,9 +3,9 @@ Created on 23.02.2018
 
 Provides the database API to access the goal tracker's persistent data.
 
-Reference: Code taken an modified from PWP2018 exercise
+Reference: Code adapted and modified from PWP2018 exercise
 '''
-import constants as constants
+import src.db.constants as constants
 import sqlite3
 
 class GoalRepo(object):
@@ -43,6 +43,7 @@ class GoalRepo(object):
         return {
             'goal_id': row['goal_id'],
             'title': row['title'],
+            'topic': row['topic'],
             'description': row['description']
         }
 
@@ -107,10 +108,10 @@ class GoalRepo(object):
         '''
         #Create the SQL Statement build the string depending on the existence
         #of user_id, numbero_of_goals, before and after arguments.
-        if before is not None and not isinstance(before, int):
-            raise ValueError("Invalid before timestamps")
-        if after is not None and not isinstance(after, int):
-            raise ValueError("Invalid after timestamps")
+        if before is not None and ( not isinstance(before, int) or before < 0):
+            raise ValueError("Invalid `before` timestamps")
+        if after is not None and ( not isinstance(after, int) or after < 0):
+            raise ValueError("Invalid `bfter` timestamps")
         query = 'SELECT * FROM goals'
           #user_id restriction
         if (user_id is not None) or \
@@ -177,7 +178,8 @@ class GoalRepo(object):
                     status):
         '''
         Modify the title, the topic, the description, the status, and the
-        deadline of the goal with id ``goal_id``
+        deadline of the goal with id ``goal_id``. An individual field can be
+        modified by setting the rest as None.
 
         :param int goal_id: The id of the goal to remove.
         :param str title: the goal's title
