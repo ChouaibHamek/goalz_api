@@ -7,8 +7,8 @@ Reference: Code taken an modified from PWP2018 exercise
 '''
 
 import sqlite3
-import constants as constants
-from resource_repo import ResourceRepo
+from src.db import constants
+from src.db.resource_repo import ResourceRepo
 
 
 class Connection(object):
