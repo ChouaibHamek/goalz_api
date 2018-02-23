@@ -8,7 +8,7 @@ Reference: Code taken an modified from PWP2018 exercise
 
 import sqlite3
 import constants as constants
-from goal_repo import GoalsRepo
+from goal_repo import GoalRepo
 
 class Connection(object):
     '''
@@ -150,25 +150,92 @@ class Connection(object):
 
     def get_goals(self, user_id=None, number_of_goals=None,
                      before=None, after=None):
+        '''
+        Return a list of all the goals in the database filtered by the
+        conditions provided in the parameters.
+
+        :param user_id: Default None. Search goals of a user with the given
+            user_id. If this parameter is None, it returns the goals of any user
+            in the system.
+        :type user_id: int
+        :param number_of_goals: Default None. Sets the maximum number of
+            goals returning in the list. If set to None, there is no limit.
+        :type number_of_goals: int
+        :param before: Default None. All deadlines > ``before`` (UNIX timestamp)
+            are removed. If set to None, this condition is not applied.
+        :type before: long
+        :param after: Default None. All deadlines < ``after`` (UNIX timestamp)
+            are removed. If set to None, this condition is not applied.
+        :type after: long
+
+        :return: A list of goals. Each goal is a dictionary containing
+            the following keys:
+
+            * ``goal_id``: integer representing the Id of the goal.
+            * ``title``: string containing the title of the goal.
+            * ``description``: string containing the description of goal.
+
+            Note that all values in the returned dictionary are string unless
+            otherwise stated.
+
+        :raises ValueError: if ``before`` or ``after`` are not valid UNIX
+            timestamps
+
+        '''
         self.set_foreign_keys_support()
-        return self.goal_repo.get_goals(user_id, number_of_goals,
-                     before, after)
+        return self.goal_repo.get_goals(user_id, number_of_goals, before, after)
 
     def delete_goal(self, goal_id):
+        '''
+        Delete the goal with id given as parameter.
+
+        :param int goal_id: id of the goal to remove.
+        :return: True if the goal has been deleted, False otherwise
+
+        '''
         self.set_foreign_keys_support()
         return self.goal_repo.delete_goal(goal_id)
 
-    def modify_goal(self, goal_id, title, topic, description, deadline,
-                    status):
+    def modify_goal(self, goal_id, title=None, topic=None, description=None,
+                deadline=None, status=None):
+        '''
+        Modify the title, the topic, the description, the status, and the
+        deadline of the goal with id ``goal_id``
+
+        :param int goal_id: the id of the goal to remove.
+        :param str title: default None. The goal's title
+        :param str topic: default None. The goal's topic
+        :param str description: default None. The goal's description
+        :param int deadline: default None. The goal's deadline
+        :param int status: default None. The goal's status
+        :return: the id of the edited goal or None if the goal was
+              not found.
+
+        '''
         self.set_foreign_keys_support()
         return self.goal_repo.modify_goal(goal_id, title, topic, description,
                     deadline, status)
 
-    def create_goal(self, title, parent_id, topic, description, deadline=None,
-                    status=0):
+    def create_goal(self, user_id, title, topic, description, parent_id=None,
+                    deadline=None, status=0):
+        '''
+        Create a new goal with the data provided as arguments.
+
+        :param int user_id: the id of the user that created the goal
+        :param int parent_id: default to None. The goal's parent_id
+        :param str title: the goal's title
+        :param str topic: the goal's topic
+        :param str description: the goal's description.
+        :param int deadline: default to None. The goal's deadline.
+        :param int status: default to 0. The goal's status.
+
+        :return: the id of the created goal or None if the goal was
+            not found.
+
+        '''
         self.set_foreign_keys_support()
-        return self.goal_repo.create_goal(goal_id, title, topic, description,
-                    deadline, status)
+        return self.goal_repo.create_goal(user_id, parent_id, title, topic,
+                    description, deadline, status)
 
 
     # TODO: Implement resource methods

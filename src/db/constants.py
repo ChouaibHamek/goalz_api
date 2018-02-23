@@ -14,8 +14,18 @@ SQL_TURN_FOREIGN_KEY_ON = "PRAGMA foreign_keys = ON"
 SQL_TURN_FOREIGN_KEY_OFF = "PRAGMA foreign_keys = OFF"
 SQL_DELETE_USERS_DATA = "DELETE FROM users"
 SQL_DELETE_USERS_PROFILE_DATA = "DELETE FROM user_profile"
-SQL_DELETE_GOALS_DATA = "DELETE FROM goals"
 SQL_DELETE_RESOURCES_DATA = "DELETE FROM resources"
+
+#GOALS statements
+SQL_SELECT_GOAL = "SELECT * FROM goals WHERE goal_id = ?"
+SQL_DELETE_GOAL = "DELETE FROM goals WHERE goal_id = ?"
+SQL_UPDATE_GOAL = "UPDATE goals SET title = ?, topic = ?, description = ?, \
+                deadline = ?, status = ? WHERE goal_id = ?"
+SQL_INSERT_GOAL = 'INSERT INTO goals (parent_id, title, topic, description, \
+                deadline, status, user_id) VALUES(?,?,?,?,?,?,?)'
+# SQL STATEMENTS FOR GET GOALS FILTERS AND UPDATE GOAL ARE IMPLEMENTED
+#INSIDE GOAL_REPO FOR READABILITY AND EASE OF USE
+
 SQL_CREATE_USERS_TABLE = \
     'CREATE TABLE  users( \
       user_id INTEGER PRIMARY KEY,\
