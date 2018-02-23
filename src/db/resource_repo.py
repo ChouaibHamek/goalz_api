@@ -33,12 +33,13 @@ class ResourceRepo(object):
         link = row['link']
         topic = row['topic']
         description = row['description']
+        required_time = row['required_time']
         rating = row['rating']
 
         resource = {'resource_id': resource_id, 'goal_id': goal_id,
                     'user_id': user_id, 'title': title,
-                    'link': link, 'topic': topic,
-                    'description': description, 'rating': rating}
+                    'link': link, 'topic': topic, 'description': description,
+                    'required_time': required_time, 'rating': rating}
 
         return resource
 
