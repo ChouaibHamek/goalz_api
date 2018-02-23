@@ -7,7 +7,7 @@ Reference: Code taken an modified from PWP2018 exercise
 '''
 
 import sqlite3
-import src.db.constants as constants
+import constants as constants
 
 
 class Connection(object):
@@ -182,13 +182,13 @@ class Connection(object):
     # db management (can be an inner class)
     #
     # new methods should be added if required
-    def get_resource(self, user):
+    def get_resource(self, resource_id):
         raise NotImplementedError("")
 
-    def get_resources(self, user_id=None):
+    def get_resources(self, goal_id):
         raise NotImplementedError("")
 
-    def delete_resource(self, user_id):
+    def delete_resource(self, resource_id):
         raise NotImplementedError("")
 
     def modify_resource(self):
