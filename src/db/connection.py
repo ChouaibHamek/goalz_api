@@ -7,8 +7,8 @@ Reference: Code taken an modified from PWP2018 exercise
 '''
 
 import sqlite3
-import src.db.constants as constants
-
+import constants as constants
+from goal_repo import GoalsRepo
 
 class Connection(object):
     '''
@@ -32,6 +32,7 @@ class Connection(object):
         super(Connection, self).__init__()
         self.con = sqlite3.connect(db_path)
         self._isclosed = False
+        self.goal_repo = GoalRepo(self.con)
 
     def isclosed(self):
         '''
@@ -141,39 +142,34 @@ class Connection(object):
         # Transforms db row to python dictionary
         raise NotImplementedError("")
 
-    # TODO: Implement goals methods
     # GOAL METHODS
-    # this methods represent the db api. A description should be provided and the
-    # execution should be delegated to a separate class which deals with goals
-    # db management (can be an inner class)
-    #
-    # new methods should be added if required
-    def get_goal(self, user):
-        raise NotImplementedError("")
+    # delegate methods from the goal_repo class
+    def get_goal(self, goal_id):
+        self.set_foreign_keys_support()
+        return self.goal_repo.get_goal(goal_id)
 
-    def get_goals(self, user_id=None):
-        raise NotImplementedError("")
+    def get_goals(self, user_id=None, number_of_goals=None,
+                     before=None, after=None):
+        self.set_foreign_keys_support()
+        return self.goal_repo.get_goals(user_id, number_of_goals,
+                     before, after)
 
-    def delete_goal(self, user_id):
-        raise NotImplementedError("")
+    def delete_goal(self, goal_id):
+        self.set_foreign_keys_support()
+        return self.goal_repo.delete_goal(goal_id)
 
-    def modify_goal(self):
-        # NOTE: this method should have more parameters (check exercises)
-        raise NotImplementedError("")
+    def modify_goal(self, goal_id, title, topic, description, deadline,
+                    status):
+        self.set_foreign_keys_support()
+        return self.goal_repo.modify_goal(goal_id, title, topic, description,
+                    deadline, status)
 
-    def create_goal(self):
-        # NOTE: this method should have more parameters (check exercises)
-        raise NotImplementedError("")
+    def create_goal(self, title, parent_id, topic, description, deadline=None,
+                    status=0):
+        self.set_foreign_keys_support()
+        return self.goal_repo.create_goal(goal_id, title, topic, description,
+                    deadline, status)
 
-    # HELPERS FOR GOALS
-    # this methods should be in a separate class which deals with user db management (can be an inner class)
-    def _create_goal_object(self, row):
-        # Transforms db row to python dictionary
-        raise NotImplementedError("")
-
-    def _create_goal_list_object(self, row):
-        # Transforms db row to python dictionary
-        raise NotImplementedError("")
 
     # TODO: Implement resource methods
     # RESOURCE METHODS
