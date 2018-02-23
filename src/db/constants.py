@@ -17,6 +17,7 @@ SQL_DELETE_USERS_PROFILE_DATA = "DELETE FROM user_profile"
 SQL_DELETE_RESOURCES_DATA = "DELETE FROM resources"
 
 #GOALS statements
+SQL_DELETE_GOALS_DATA = "DELETE FROM goals"
 SQL_SELECT_GOAL = "SELECT * FROM goals WHERE goal_id = ?"
 SQL_DELETE_GOAL = "DELETE FROM goals WHERE goal_id = ?"
 SQL_UPDATE_GOAL = "UPDATE goals SET title = ?, topic = ?, description = ?, \

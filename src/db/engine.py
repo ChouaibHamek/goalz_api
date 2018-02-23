@@ -8,8 +8,8 @@ Reference: Code taken an modified from PWP2018 exercise
 
 import os
 import sqlite3
-import constants as constants
-from connection import Connection
+import src.db.constants as constants
+from src.db.connection import Connection
 
 
 class Engine(object):

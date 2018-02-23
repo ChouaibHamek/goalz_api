@@ -7,8 +7,8 @@ Reference: Code taken an modified from PWP2018 exercise
 '''
 
 import sqlite3
-import constants as constants
-from goal_repo import GoalRepo
+import src.db.constants as constants
+from src.db.goal_repo import GoalRepo
 
 class Connection(object):
     '''
@@ -200,7 +200,8 @@ class Connection(object):
                 deadline=None, status=None):
         '''
         Modify the title, the topic, the description, the status, and the
-        deadline of the goal with id ``goal_id``
+        deadline of the goal with id ``goal_id``. An individual field can be
+        modified by setting the rest as None.
 
         :param int goal_id: the id of the goal to remove.
         :param str title: default None. The goal's title
@@ -236,7 +237,6 @@ class Connection(object):
         self.set_foreign_keys_support()
         return self.goal_repo.create_goal(user_id, parent_id, title, topic,
                     description, deadline, status)
-
 
     # TODO: Implement resource methods
     # RESOURCE METHODS
