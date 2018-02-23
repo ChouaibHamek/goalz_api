@@ -238,6 +238,17 @@ class Connection(object):
         return self.goal_repo.create_goal(user_id, parent_id, title, topic,
                     description, deadline, status)
 
+    def contains_goal(self, goal_id):
+        '''
+        Checks if a goal is in the database.
+
+        :param int goal_id: Id of the goal to search.
+        :return: True if the goal is in the database. False otherwise.
+
+        '''
+        return self.goal_repo.get_goal(goal_id) is not None
+
+
     # TODO: Implement resource methods
     # RESOURCE METHODS
     # this methods represent the db api. A description should be provided and the
