@@ -8,6 +8,7 @@ Reference: Code taken an modified from PWP2018 exercise
 
 import sqlite3
 import constants as constants
+from resource_repo import ResourceRepo
 
 
 class Connection(object):
@@ -32,6 +33,7 @@ class Connection(object):
         super(Connection, self).__init__()
         self.con = sqlite3.connect(db_path)
         self._isclosed = False
+        self.resource_repo = ResourceRepo(self.con)
 
     def isclosed(self):
         '''
@@ -175,37 +177,27 @@ class Connection(object):
         # Transforms db row to python dictionary
         raise NotImplementedError("")
 
-    # TODO: Implement resource methods
     # RESOURCE METHODS
-    # this methods represent the db api. A description should be provided and the
-    # execution should be delegated to a separate class which deals with resources
-    # db management (can be an inner class)
-    #
-    # new methods should be added if required
     def get_resource(self, resource_id):
-        raise NotImplementedError("")
+        return self.resource_repo.get_resource(resource_id)
 
-    def get_resources(self, goal_id):
-        raise NotImplementedError("")
+    def get_resources_for_goal(self, goal_id,
+                               number_of_resource=None, max_length=None):
+        return self.resource_repo.get_resources_for_goal(goal_id,
+                                                         number_of_resource, max_length)
+
+    def get_resources_for_user(self, user_id,
+                               number_of_resource=None, max_length=None):
+        return self.resource_repo.get_resources_for_user(user_id,
+                                                         number_of_resource, max_length)
 
     def delete_resource(self, resource_id):
-        raise NotImplementedError("")
+        return self.resource_repo.delete_resource(resource_id)
 
-    def modify_resource(self):
-        # NOTE: this method should have more parameters (check exercises)
-        # NOTE: the resource cannot be modified, only their rating
-        raise NotImplementedError("")
+    def modify_resource(self, rating):
+        return self.resource_repo.modify_resource(rating)
 
-    def create_resource(self):
-        # NOTE: this method should have more parameters (check exercises)
-        raise NotImplementedError("")
-
-    # HELPERS FOR GOALS
-    # this methods should be in a separate class which deals with user db management (can be an inner class)
-    def _create_resource_object(self, row):
-        # Transforms db row to python dictionary
-        raise NotImplementedError("")
-
-    def _create_resource_list_object(self, row):
-        # Transforms db row to python dictionary
-        raise NotImplementedError("")
+    def create_resource(self, goal_id, user_id, title, link,
+                        topic, description=None, required_time=None):
+        return self.resource_repo.create_resource(goal_id, user_id, title, link,
+                                                  topic, description, required_time)
