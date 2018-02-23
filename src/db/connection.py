@@ -179,6 +179,7 @@ class Connection(object):
 
     # RESOURCE METHODS
     def get_resource(self, resource_id):
+        self.set_foreign_keys_support()
         return self.resource_repo.get_resource(resource_id)
 
     def get_resources_for_goal(self, goal_id,

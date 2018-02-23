@@ -1,3 +1,6 @@
+import sqlite3
+from src.db import constants
+
 
 class ResourceRepo(object):
 
@@ -6,7 +9,17 @@ class ResourceRepo(object):
         self.con = con
 
     def get_resource(self, resource_id):
-        raise NotImplementedError("")
+        query = constants.SQL_SELECT_RESOURCE_BY_ID
+        param_value = (resource_id,)
+
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        cur.execute(query, param_value)
+
+        row = cur.fetchone()
+        if row is None:
+            return None
+        return self._create_resource_object(row)
 
     def get_resources_for_goal(self, goal_id, number_of_resource, max_length):
         raise NotImplementedError("")
@@ -25,7 +38,6 @@ class ResourceRepo(object):
 
     # HELPERS FOR GOALS
     def _create_resource_object(self, row):
-
         resource_id = row['resource_id']
         goal_id = row['goal_id']
         user_id = row['user_id']
@@ -44,7 +56,6 @@ class ResourceRepo(object):
         return resource
 
     def _create_resource_list_object(self, row):
-
         resource_id = row['resource_id']
         title = row['title']
         description = row['description']
