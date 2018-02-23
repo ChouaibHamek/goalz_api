@@ -182,16 +182,11 @@ class Connection(object):
         self.set_foreign_keys_support()
         return self.resource_repo.get_resource(resource_id)
 
-    def get_resources_for_goal(self, goal_id,
-                               number_of_resource=None, max_length=None):
-        return self.resource_repo.get_resources_for_goal(goal_id,
-                                                         number_of_resource, max_length)
-
-    def get_resources_for_user(self, user_id,
-                               number_of_resource=None, max_length=None):
-        return self.resource_repo.get_resources_for_user(user_id,
-                                                         number_of_resource, max_length)
-
+    def get_resources(self, goal_id=None, user_id=None,
+                      number_of_resource=None, max_length=None):
+        self.set_foreign_keys_support()
+        return self.resource_repo.get_resources(goal_id, user_id,
+                                                number_of_resource, max_length)
     def delete_resource(self, resource_id):
         return self.resource_repo.delete_resource(resource_id)
 

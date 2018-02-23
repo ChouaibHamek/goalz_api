@@ -21,11 +21,50 @@ class ResourceRepo(object):
             return None
         return self._create_resource_object(row)
 
-    def get_resources_for_goal(self, goal_id, number_of_resource, max_length):
-        raise NotImplementedError("")
+    def get_resources(self, goal_id, user_id, number_of_resource, max_length):
+        query = constants.SQL_SELECT_RESOURCES
 
-    def get_resources_for_user(self, user_id, number_of_resource, max_length):
-        raise NotImplementedError("")
+        filters = []
+        parameters = []
+
+        if goal_id is not None:
+            if not isinstance(goal_id, int):
+                return None
+            filters.append(constants.SQL_SELECT_RESOURCE_GOAL_ID_FILTER)
+            parameters.append(str(goal_id))
+        if user_id is not None:
+            if not isinstance(user_id, int):
+                return None
+            filters.append(constants.SQL_SELECT_RESOURCE_USER_ID_FILTER)
+            parameters.append(str(user_id))
+        if max_length is not None:
+            if not isinstance(max_length, int):
+                return None
+            filters.append(constants.SQL_SELECT_RESOURCE_LENGTH_FILTER)
+            parameters.append(str(max_length))
+        if len(filters) != 0:
+            query += constants.SQL_WHERE_CLAUSE + constants.SLQ_AND_CLAUSE.join(filters)
+
+        if number_of_resource is not None:
+            if not isinstance(number_of_resource, int):
+                return None
+            query += constants.SQL_LIMIT_CLAUSE
+            parameters.append(str(number_of_resource))
+
+        print(query)
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        cur.execute(query, tuple(parameters))
+
+        rows = cur.fetchall()
+        if rows is None:
+            return None
+
+        resources = []
+        for row in rows:
+            resource = self._create_resource_list_object(row)
+            resources.append(resource)
+        return resources
 
     def delete_resource(self, resource_id):
         raise NotImplementedError("")
