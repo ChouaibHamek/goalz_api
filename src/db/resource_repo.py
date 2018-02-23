@@ -25,9 +25,31 @@ class ResourceRepo(object):
 
     # HELPERS FOR GOALS
     def _create_resource_object(self, row):
-        # Transforms db row to python dictionary
-        raise NotImplementedError("")
+
+        resource_id = row['resource_id']
+        goal_id = row['goal_id']
+        user_id = row['user_id']
+        title = row['title']
+        link = row['link']
+        topic = row['topic']
+        description = row['description']
+        rating = row['rating']
+
+        resource = {'resource_id': resource_id, 'goal_id': goal_id,
+                    'user_id': user_id, 'title': title,
+                    'link': link, 'topic': topic,
+                    'description': description, 'rating': rating}
+
+        return resource
 
     def _create_resource_list_object(self, row):
-        # Transforms db row to python dictionary
-        raise NotImplementedError("")
+
+        resource_id = row['resource_id']
+        title = row['title']
+        description = row['description']
+
+        resource = {'resource_id': resource_id,
+                    'title': title,
+                    'description': description}
+
+        return resource
