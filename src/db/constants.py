@@ -9,9 +9,32 @@ DEFAULT_DB_PATH = 'db/goalz.db'
 DEFAULT_SCHEMA = "db/goalz_schema_dump.sql"
 DEFAULT_DATA_DUMP = "db/goalz_data_dump.sql"
 
-# SQL statements used in the db layer
+# SQL statements used in the db laye`r
 SQL_TURN_FOREIGN_KEY_ON = "PRAGMA foreign_keys = ON"
 SQL_TURN_FOREIGN_KEY_OFF = "PRAGMA foreign_keys = OFF"
+
+# USERS statements
+SQL_SELECT_USER_BY_ID = 'SELECT user_id from users WHERE user_id = ?'
+SQL_SELECT_USER_BY_NICKNAME = 'SELECT user_id from users WHERE nickname = ?'
+SQL_SELET_USER_AND_PROFILE_BY_ID = 'SELECT users.*, user_profile.* FROM users, user_profile \
+                                    WHERE users.user_id = ? \
+                                    AND user_profile.user_id = users.user_id'
+SQL_SELECT_USER_AND_PROFILE = 'SELECT users.*, user_profile.* FROM users, user_profile \
+                               WHERE users.user_id = user_profile.user_id'
+SQL_DELETE_USER = 'DELETE FROM users WHERE user_id = ?'
+SQL_DELETE_USERS_DATA = "DELETE FROM users"
+SQL_DELETE_USERS_PROFILE_DATA = "DELETE FROM user_profile"
+SQL_UPDATE_USER_PASSWORD = 'UPDATE users SET password = ?\
+                            WHERE user_id = ?'
+SQL_UPDATE_USER_PROFILE = 'UPDATE user_profile SET firstname = ?,lastname = ?, \
+                            email = ?,age = ?, \
+                            gender = ?,website = ? \
+                            WHERE user_id = ?'
+SQL_INSERT_USER = 'INSERT INTO users(nickname,password,registration_date)\
+                   VALUES(?,?,?)'
+SQL_INSERT_USER_PROFILE = 'INSERT INTO user_profile (user_id,firstname,lastname, \
+                           email,age,gender,rating,website) \
+                           VALUES (?,?,?,?,?,?,?,?)'
 SQL_DELETE_USERS_DATA = "DELETE FROM users"
 SQL_DELETE_USERS_PROFILE_DATA = "DELETE FROM user_profile"
 

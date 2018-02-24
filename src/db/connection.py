@@ -11,6 +11,7 @@ import sqlite3
 from src.db import constants
 from src.db.resource_repo import ResourceRepo
 from src.db.goal_repo import GoalRepo
+from src.db.user_repo import UserRepo
 
 class Connection(object):
     '''
@@ -36,6 +37,7 @@ class Connection(object):
         self._isclosed = False
         self.goal_repo = GoalRepo(self.con)
         self.resource_repo = ResourceRepo(self.con)
+        self.user_repo = UserRepo(self.con)
 
     def isclosed(self):
         '''
@@ -108,42 +110,134 @@ class Connection(object):
             print("Error %s:" % excp.args[0])
             return False
 
-    # TODO: Implement user methods
     # USER METHODS
-    # this methods represent the db api. A description should be provided and the
-    # execution should be delegated to a separate class which deals with user
-    # db management (can be an inner class)
-    #
-    # new methods should be added if required
-    def get_user(self, user):
-        raise NotImplementedError("")
+    def get_user(self, user_id=None, nickname=None):
+        '''
+        Extracts all the information of a user by user_id or nickname.
 
-    def get_user(self, user_id):
-        raise NotImplementedError("")
+        :param integer user_id: The unique id of the user to search for, default None.
+        :param string nickname: The nickname of the user to search for, default None.
+        :return: dictionary with the format provided in the method:
+            :py:meth:`_create_user_object`. None is returned if the database
+            has no users with given user_id.
+        '''
+        self.set_foreign_keys_support()
+        return self.user_repo.get_user(user_id, nickname)
+
+    def get_user_public(self, user_id=None, nickname=None):
+        '''
+        Extracts public information of a user by the user_id or nickname
+        
+        :param integer user_id: The unique ID of the user, default None.
+        :param string nickname: The nickname of the user to search for, default None.
+        :return: user data dictionary with the format provided in the method:
+            :py:meth:`_create_user_list_object`. None is returned if the database
+            has no users with given nickname.
+        '''
+        self.set_foreign_keys_support()
+        return self.user_repo.get_user_public(user_id, nickname)
 
     def get_users(self):
-        raise NotImplementedError("")
+        '''
+        Extracts all users in the database.
+
+        :return: list of Users of the database. Each user is a dictionary
+            with the format provided in the method:
+            :py:meth:`_create_user_list_object`.
+            None is returned if the database has no users.
+        '''
+        self.set_foreign_keys_support()
+        return self.user_repo.get_users()
 
     def delete_user(self, user_id):
-        raise NotImplementedError("")
+        '''
+        Remove all information of the user with the user_id passed in as
+        argument.
 
-    def modify_user(self):
-        # NOTE: this method should have more parameters (check exercises)
-        raise NotImplementedError("")
+        :param integer user_id: The unique ID of the user to remove.
+        :return: True if the user is deleted, False otherwise.
 
-    def create_user(self):
-        # NOTE: this method should have more parameters (check exercises)
-        raise NotImplementedError("")
+        '''
+        self.set_foreign_keys_support()
+        return self.user_repo.delete_user(user_id)
 
-    # HELPERS FOR USERS
-    # this methods should be in a separate class which deals with user db management (can be an inner class)
-    def _create_user_object(self, row):
-        # Transforms db row to python dictionary
-        raise NotImplementedError("")
+    def modify_user(self, user_id, r_profile):
+        '''
+        Modify the information of a user.
 
-    def _create_user_list_object(self, row):
-        # Transforms db row to python dictionary
-        raise NotImplementedError("")
+        :param int user_id: The unique ID of the user to modify
+        :param dict r_profile: a dictionary with the restricted information + website(public)
+                to be modified. The dictionary has the following structure:
+
+                .. code-block:: javascript
+
+                    {'password':'',firstname':'','lastname':'',
+                    'email':'', 'age':'','gender':'','website':''}
+
+                where:
+
+                * ``password``: new passowrd of the user (string).
+                * ``firstanme``: new given name of the user (string).
+                * ``lastname``: new family name of the user (string).
+                * ``email``: new email of the user (string).
+                * ``age``: new age of the user (integer).
+                * ``gender``: new gender information of the user (string).
+                * ``website``: new user's personal web URL (string).
+
+        :return: the user_id of the modified user or None if the
+            ``user_id`` passed is not in the database.
+        '''
+        self.set_foreign_keys_support()
+        return self.user_repo.modify_user(user_id, r_profile)
+
+    def create_user(self, nickname, new_user):
+        '''
+        Create a new user in the database.
+
+        :param  str nickname: The nickname of the user to modify
+        :param dict user: a dictionary with the new user information. The
+                dictionary has the following structure:
+
+                .. code-block:: javascript
+
+                    {'firstname':'','lastname':'',
+                     'email':'', 'password:'','age':'','gender':'',
+                     'website':''}
+
+                where:
+
+                * ``firstname``: given name of the user (string).
+                * ``lastname``: family name of the user (string).
+                * ``email``: email of the user (string).
+                * ``password``: given password of the user (string).
+                * ``age``: user's age (integer).
+                * ``gender``: user's gender. Can be None (string).
+                * ``webiste``: user's personal web URL. Can be None (string).
+
+        :return: the nickname of the modified user or None if the
+            ``nickname`` passed as parameter is already in the database.
+        '''
+        self.set_foreign_keys_support()
+        return self.user_repo.create_user(nickname, new_user)
+
+    def get_user_id(self, nickname):
+        '''
+        Get the user_id of the user with the given
+        nickname.
+
+        :param str nickname: The nickname of the user to search.
+        :return: the database attribute user_id or None if ``nickname`` does
+            not exist in the database.
+        '''
+        self.set_foreign_keys_support()
+        return self.user_repo.get_user_id(nickname)
+
+    def contains_user(self, nickname):
+        '''
+        :return: True if the user is in the database. False otherwise
+        '''
+        self.set_foreign_keys_support()
+        return self.user_repo.get_user_id(nickname)
 
     # GOAL METHODS
     # delegate methods from the goal_repo class
@@ -394,4 +488,3 @@ class Connection(object):
         '''
 
         return self.get_resource(resource_id) is not None
-

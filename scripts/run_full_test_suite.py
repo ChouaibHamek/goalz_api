@@ -13,6 +13,7 @@ import unittest
 testmodules = [
     'test.database_api_tests_resources',
     'test.database_api_tests_goal',
+    'test.database_api_tests_user'
     ]
 
 def main():
