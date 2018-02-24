@@ -17,7 +17,7 @@ A resources' list has the following format:
 [{'resource_id':'', 'title':'', 'description':''},
  {'resource_id':'', 'title':'', 'description':''}]
 
-Reference: Code taken an modified from PWP2018 exercise
+Reference: Code taken and modified from PWP2018 exercise
 '''
 
 import sqlite3

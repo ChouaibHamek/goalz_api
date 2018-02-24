@@ -3,7 +3,7 @@ Created on 23.02.2018
 
 Provides method to access and manipulate data from the "resource" table
 
-Reference: Code taken an modified from PWP2018 exercise
+Reference: Code taken and modified from PWP2018 exercise
 '''
 
 import sqlite3

@@ -3,7 +3,7 @@ Created on 20.02.2018
 
 Provides the database management mechanism
 
-Reference: Code taken an modified from PWP2018 exercise
+Reference: Code taken and modified from PWP2018 exercise
 '''
 
 import os
