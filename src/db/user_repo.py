@@ -11,7 +11,7 @@ import src.db.constants as constants
 import time, sqlite3
 
 class UserRepo(object):
-     '''
+    '''
     Methods to manipulate "user" table in the Goalz database
 
     The sqlite3 connection instance is received as a constructor parameter and
