@@ -3,6 +3,7 @@ Created on 23.02.2018
 Database interface tests which are testing
 correctness of the tables' schemas and correctness of tables' creation
 
+Reference: Code taken and modified from PWP2018 exercise
 '''
 
 import sqlite3, unittest
@@ -279,6 +280,23 @@ class CreatedTablesTestCase(unittest.TestCase):
             # Assert
             self.assertEqual(len(resources), INITIAL_RESOURCES_SIZE)
 
+    def test_foreign_keys_status(self):
+        '''
+        Checks that the foreign keys support is set and unset correctly.
+        '''
+        print('(' + self.test_foreign_keys_status.__name__ + ')', \
+              self.test_foreign_keys_status.__doc__)
+        # Checks that foreign key support is activated
+        success = self.connection.set_foreign_keys_support()
+        if success:
+            fk_status = self.connection.check_foreign_keys_status()
+            self.assertTrue(fk_status)
+
+        # Checks that foreign key support is deactivated
+        success = self.connection.unset_foreign_keys_support()
+        if success:
+            fk_status = self.connection.check_foreign_keys_status()
+            self.assertFalse(fk_status)
 
 if __name__ == '__main__':
     print('Start running database tests')
