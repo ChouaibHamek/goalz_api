@@ -56,20 +56,20 @@ USER1_NICKNAME = 'Chouaib'
 USER1_ID = 1
 USER1 = {'public_profile': {'registration_date': 1362015937,
                             'nickname': USER1_NICKNAME,
-                            'rating': '0.9',
+                            'rating': 0.9,
                             'website': 'https://github.com/ChouaibHamek'},
          'restricted_profile': {'firstname': 'Chouaib',
                                 'lastname': 'Ha',
                                 'email': 'c@h.com',
                                 'password': 'E6C5F49BD4DF062BC92419C7EA63806B',
-                                'age': '24',
+                                'age': 24,
                                 'gender': 'M'}
          }
 MODIFIED_USER1 = {'password':'Y6C5G49BD4DF062CD92419T7EA63806V',
                  'firstname':'Cho',
                  'lastname':'Hamek',
                   'email':'ch@h.com',
-                  'age':'25',
+                  'age':25,
                   'gender':'M',
                   'website':'https://github.com/ChouaibHamek'}
 
@@ -77,13 +77,13 @@ USER2_NICKNAME = 'Daniel'
 USER2_ID = 2
 USER2 = {'public_profile': {'registration_date': 1357724086,
                             'nickname': USER2_NICKNAME,
-                            'rating': '0.8',
+                            'rating': 0.8,
                             'website': 'https://github.com/dtoniuc'},
-         'restricted_profile': {'firstname': 'TestFirstName2',
-                                'lastname': 'TestLastName2',
-                                'email': 'user2@goalz.com',
-                                'password': 'password2',
-                                'age': '29',
+         'restricted_profile': {'firstname': 'Daniel',
+                                'lastname': 'To',
+                                'email': 'd@t.com',
+                                'password': 'AA47F8215C6F30A0DCDB2A36A9F4168E',
+                                'age': 18,
                                 'gender': 'M'}
          }
 NEW_USER_NICKNAME = 'Nathan'
@@ -91,19 +91,19 @@ NEW_USER = {'firstname':'Nathan',
             'lastname':'East',
             'email':'ne@101e.com',
             'password':'E6C5F49BD4DF062BC92419C7EA63806B',
-            'age':'50',
+            'age':50,
             'gender':'M',
             'website':'www.nathaneast.com'
             }
-NEW_USER_GET = {'public_profile': {'registrationdate': 1362015937,
+NEW_USER_GET = {'public_profile': {'registration_date': 1519490313,
                             'nickname': NEW_USER_NICKNAME,
-                            'rating': '0',
+                            'rating': 0,
                             'website': 'www.nathaneast.com'},
                 'restricted_profile': {'firstname': 'Nathan',
                                 'lastname': 'East',
                                 'email': 'ne@101e.com',
                                 'password': 'E6C5F49BD4DF062BC92419C7EA63806B',
-                                'age': '50',
+                                'age': 50,
                                 'gender': 'M'}
                 }
 USER_WRONG_NICKNAME = 'Angelia'
@@ -219,34 +219,83 @@ class UserDBAPITestCase(unittest.TestCase):
 
     def test_get_user_by_nickname(self):
         '''
-        Test get_user with nickname Chouaib and Daniel
+        Test get_user with nickname (Chouaib and Daniel)
         '''
         print('('+self.test_get_user_by_nickname.__name__+')', \
               self.test_get_user_by_nickname.__doc__)
 
         #Test with an existing user
-        user = self.connection.get_user_public(USER1_NICKNAME)
+        user = self.connection.get_user(nickname=USER1_NICKNAME)
+        self.assertDictContainsSubset(user, USER1)
+        user = self.connection.get_user(nickname=USER2_NICKNAME)
+        self.assertDictContainsSubset(user, USER2)
+
+    def test_get_user_public_by_id(self):
+        '''
+        Test get_user_public with id of Chouaib and Daniel
+        '''
+        print('('+self.test_get_user_public_by_id.__name__+')', \
+              self.test_get_user_public_by_id.__doc__)
+
+        #Test with an existing user
+        user = self.connection.get_user_public(USER1_ID)
         self.assertDictContainsSubset(user, USER1['public_profile'])
-        user = self.connection.get_user_public(USER2_NICKNAME)
+        user = self.connection.get_user_public(USER2_ID)
         self.assertDictContainsSubset(user, USER2['public_profile'])
 
-    def test_get_user_noexistingid(self):
+    def test_get_user_public_by_nickname(self):
+        '''
+        Test get_user_public with nickname (Chouaib and Daniel)
+        '''
+        print('('+self.test_get_user_public_by_nickname.__name__+')', \
+              self.test_get_user_public_by_nickname.__doc__)
+
+        #Test with an existing user
+        user = self.connection.get_user_public(nickname=USER1_NICKNAME)
+        self.assertDictContainsSubset(user, USER1['public_profile'])
+        user = self.connection.get_user_public(nickname=USER2_NICKNAME)
+        self.assertDictContainsSubset(user, USER2['public_profile'])
+
+    def test_get_user_non_existing_id(self):
         '''
         Test get_user with non existing ID
         '''
-        print('('+self.test_get_user_noexistingid.__name__+')', \
-              self.test_get_user_noexistingid.__doc__)
+        print('('+self.test_get_user_non_existing_id.__name__+')', \
+              self.test_get_user_non_existing_id.__doc__)
 
         #Test with an no existing user
         user = self.connection.get_user(USER_WRONG_ID)
         self.assertIsNone(user)
 
-    def test_get_user_noexistingnickname(self):
+
+    def test_get_user_non_existing_nickname(self):
         '''
         Test get_user with non existing nicnkname
         '''
-        print('('+self.test_get_user_noexistingid.__name__+')', \
-              self.test_get_user_noexistingid.__doc__)
+        print('('+self.test_get_user_non_existing_nickname.__name__+')', \
+              self.test_get_user_non_existing_nickname.__doc__)
+
+        #Test with an no existing user
+        user = self.connection.get_user(USER_WRONG_NICKNAME)
+        self.assertIsNone(user)
+
+    def test_get_user_public_non_existing_id(self):
+        '''
+        Test get_user_public with non existing ID
+        '''
+        print('('+self.test_get_user_public_non_existing_id.__name__+')', \
+              self.test_get_user_public_non_existing_id.__doc__)
+
+        #Test with an no existing user
+        user = self.connection.get_user_public(USER_WRONG_ID)
+        self.assertIsNone(user)
+
+    def test_get_user_public_non_existing_nickname(self):
+        '''
+        Test get_user_public with non existing nickname
+        '''
+        print('('+self.test_get_user_public_non_existing_nickname.__name__+')', \
+              self.test_get_user_public_non_existing_nickname.__doc__)
 
         #Test with an no existing user
         user = self.connection.get_user_public(USER_WRONG_NICKNAME)
@@ -271,7 +320,7 @@ class UserDBAPITestCase(unittest.TestCase):
 
     def test_delete_user(self):
         '''
-        Test that the user Chouaib is deleted
+        Test that the user Chouaib is deleted by id 
         '''
         print('('+self.test_delete_user.__name__+')', \
               self.test_delete_user.__doc__)
@@ -281,25 +330,25 @@ class UserDBAPITestCase(unittest.TestCase):
         resp2 = self.connection.get_user(USER1_ID)
         self.assertIsNone(resp2)
 
-    def test_delete_user_noexistingnickname(self):
+    def test_delete_user_non_existing_id(self):
         '''
-        Test delete_user with  Angelia (no-existing)
+        Test delete_user with  USER_WRONG_ID (non-existing)
         '''
-        print('('+self.test_delete_user_noexistingnickname.__name__+')', \
-              self.test_delete_user_noexistingnickname.__doc__)
+        print('('+self.test_delete_user_non_existing_id.__name__+')', \
+              self.test_delete_user_non_existing_id.__doc__)
         #Test with an existing user
         resp = self.connection.delete_user(USER_WRONG_ID)
         self.assertFalse(resp)
 
     def test_modify_user(self):
         '''
-        Test that the user Mystery is modifed
+        Test that the user Chouaib is modifed
         '''
         print('('+self.test_modify_user.__name__+')', \
               self.test_modify_user.__doc__)
         #Get the modified user
-        resp = self.connection.modify_user(USER1_ID , MODIFIED_USER1)
-        self.assertEqual(resp, USER1_NICKNAME)
+        resp = self.connection.modify_user(USER1_ID, MODIFIED_USER1)
+        self.assertEqual(resp, USER1_ID)
         #Check that the users has been really modified through a get
         resp2 = self.connection.get_user(USER1_ID)
         resp_p_profile = resp2['public_profile']
@@ -315,7 +364,7 @@ class UserDBAPITestCase(unittest.TestCase):
 
     def test_modify_user_noexistingnickname(self):
         '''
-        Test modify_user with  user Batty (no-existing)
+        Test modify_user with  user Angelia (no-existing)
         '''
         print('('+self.test_modify_user_noexistingnickname.__name__+')', \
               self.test_modify_user_noexistingnickname.__doc__)
@@ -325,7 +374,7 @@ class UserDBAPITestCase(unittest.TestCase):
 
     def test_create_user(self):
         '''
-        Test that I can add new users
+        Test create a new user
         '''
         print('('+self.test_create_user.__name__+')', \
               self.test_create_user.__doc__)
@@ -333,11 +382,19 @@ class UserDBAPITestCase(unittest.TestCase):
         self.assertIsNotNone(nickname)
         self.assertEqual(nickname, NEW_USER_NICKNAME)
         #Check that the messages has been really modified through a get
-        resp2 = self.connection.get_user(nickname)
-        self.assertDictContainsSubset(NEW_USER_GET['restricted_profile'],
-                                      resp2['restricted_profile'])
-        self.assertDictContainsSubset(NEW_USER_GET['public_profile'],
-                                      resp2['public_profile'])
+        resp2 = self.connection.get_user(nickname=nickname)
+        resp2_r_profile = resp2['restricted_profile']
+        resp2_p_profile = resp2['public_profile']
+        new_r_profile = NEW_USER_GET['restricted_profile']
+        new_p_profile = NEW_USER_GET['public_profile']
+        self.assertEqual(new_p_profile['website'],resp2_p_profile['website'])
+        self.assertEqual(new_p_profile['rating'],resp2_p_profile['rating'])
+        self.assertEqual(new_r_profile['firstname'], resp2_r_profile['firstname'])
+        self.assertEqual(new_r_profile['lastname'], resp2_r_profile['lastname'])
+        self.assertEqual(new_r_profile['email'], resp2_r_profile['email'])
+        self.assertEqual(new_r_profile['password'], resp2_r_profile['password'])
+        self.assertEqual(new_r_profile['age'], resp2_r_profile['age'])
+        self.assertEqual(new_r_profile['gender'], resp2_r_profile['gender'])
 
     def test_create_existing_user(self):
         '''
@@ -363,8 +420,8 @@ class UserDBAPITestCase(unittest.TestCase):
         '''
         Test that get_user_id returns None when the nickname does not exist
         '''
-        print('('+self.test_get_user_id.__name__+')', \
-              self.test_get_user_id.__doc__)
+        print('('+self.test_get_user_id_unknown_user.__name__+')', \
+              self.test_get_user_id_unknown_user.__doc__)
         id = self.connection.get_user_id(USER_WRONG_NICKNAME)
         self.assertIsNone(id)
 

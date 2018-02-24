@@ -16,59 +16,37 @@ class UserRepo(object):
         super(UserRepo, self).__init__()
         self.con = con
 
-    def get_user_public(self, nickname):
+    def get_user_public(self, user_id, nickname):
         '''
-        Extracts public information of a user.
-
-        :param string nickname: The nickname of the user to search for.
+        Extracts public information of a user by the user_id or nickname
+        
+        :param integer user_id: The unique ID of the user, default None.
+        :param string nickname: The nickname of the user to search for, default None.
         :return: dictionary with the format provided in the method:
             :py:meth:`_create_user_list_object`. None is returned if the database
             has no users with given nickname.
 
         '''
-        #Create the SQL Statements
-        #SQL Statement for retrieving the user given a nickname
-        query1 = constants.SQL_SELECT_USER_BY_NICKNAME
-        #SQL Statement for retrieving the user information
-        query2 = constants.SQL_SELET_USER_AND_PROFILE_BY_ID
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
-        #Execute SQL Statement to retrieve the id given a nickname
-        pvalue = (nickname,)
-        cur.execute(query1, pvalue)
-        #Extract the user id
-        row = cur.fetchone()
-        if row is None:
+        if nickname is not None:
+            #Fetch and return user if it exists else return None
+            #SQL Statement for retrieving the user given a nickname
+            query1 = constants.SQL_SELECT_USER_BY_NICKNAME
+            #Execute SQL Statement to retrieve the id given a nickname
+            pvalue = (nickname,)
+            cur.execute(query1, pvalue)
+            #Extract the user id
+            row = cur.fetchone()
+            if row is None:
+                return None
+            user_id = row["user_id"]
+        elif user_id is None:
             return None
-        user_id = row["user_id"]
-        # Execute the SQL Statement to retrieve the user information.
-        # Create first the valuse
-        pvalue = (user_id, )
-        #execute the statement
-        cur.execute(query2, pvalue)
-        #Process the response. Only one posible row is expected.
-        row = cur.fetchone()
-        #return user dictionary
-        return self._create_user_list_object(row)
-
-
-    def get_user(self, user_id):
-        '''
-        Extracts all the information of a user.
-
-        :param integer user_id: The unique id of the user to search for.
-        :return: dictionary with the format provided in the method:
-            :py:meth:`_create_user_object`. None is returned if the database
-            has no users with given user_id.
-
-        '''
         #Create the SQL Statements
         #SQL Statement for retrieving the user given a user_id
         query = constants.SQL_SELET_USER_AND_PROFILE_BY_ID
-        #Cursor and row initialization
-        self.con.row_factory = sqlite3.Row
-        cur = self.con.cursor()
         # Execute the SQL Statement to retrieve the user information.
         # Create first the valuse
         pvalue = (user_id, )
@@ -78,9 +56,52 @@ class UserRepo(object):
         row = cur.fetchone()
         if row is None:
             return None
-        else:
-            return self._create_user_object(row)
+        #return user dictionary
+        return self._create_user_list_object(row)
 
+
+    def get_user(self, user_id, nickname):
+        '''
+        Extracts all the information of a user by user_id or nickname.
+
+        :param integer user_id: The unique id of the user to search for, default None.
+        :param string nickname: The nickname of the user to search for, default None.
+        :return: dictionary with the format provided in the method:
+            :py:meth:`_create_user_object`. None is returned if the database
+            has no users with given user_id.
+
+        '''
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        if nickname is not None:
+            #Fetch and return user if it exists else return None
+            #SQL Statement for retrieving the user given a nickname
+            query1 = constants.SQL_SELECT_USER_BY_NICKNAME
+            #Execute SQL Statement to retrieve the id given a nickname
+            pvalue = (nickname,)
+            cur.execute(query1, pvalue)
+            #Extract the user id
+            row = cur.fetchone()
+            if row is None:
+                return None
+            user_id = row["user_id"]
+        elif user_id is None:
+            return None
+        #Create the SQL Statements
+        #SQL Statement for retrieving the user given a user_id
+        query = constants.SQL_SELET_USER_AND_PROFILE_BY_ID
+        # Execute the SQL Statement to retrieve the user information.
+        # Create first the valuse
+        pvalue = (user_id, )
+        #execute the statement
+        cur.execute(query, pvalue)
+        #Process the response. Only one posible row is expected.
+        row = cur.fetchone()
+        if row is None:
+            return None
+        #return user dictionary
+        return self._create_user_object(row)
 
     def get_users(self):
         '''
@@ -192,14 +213,14 @@ class UserRepo(object):
             #execute the second statement
             pvalue = (_password, user_id)
             cur.execute(query2, pvalue)
-            row1 = cur.fetchone()
+            row1 = cur.rowcount
             #execute the third statement
             pvalue = (_firstname, _lastname, _email, _age, _gender,
                      _website, user_id)
 
             cur.execute(query3, pvalue)
             self.con.commit()
-            row2 = cur.fetchone()
+            row2 = cur.rowcount
             #Check that the password or the user profile have been successfully modified
             if row1 < 1 and row2 < 1:
                 return None
@@ -382,5 +403,5 @@ class UserRepo(object):
 
         '''
         user_list_object = {'registration_date': row['registration_date'], 'nickname': row['nickname'],
-                            'rating': row['rating'], 'website': row['webiste']}
+                            'rating': row['rating'], 'website': row['website']}
         return user_list_object

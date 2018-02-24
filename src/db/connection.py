@@ -112,29 +112,31 @@ class Connection(object):
     # execution should be delegated to a separate class which deals with user
     # db management (can be an inner class)
 
-    def get_user(self, user_id):
+    def get_user(self, user_id=None, nickname=None):
         '''
-        Extracts all the information of a user.
+        Extracts all the information of a user by user_id or nickname.
 
-        :param integer user_id: The unique id of the user to search for.
+        :param integer user_id: The unique id of the user to search for, default None.
+        :param string nickname: The nickname of the user to search for, default None.
         :return: dictionary with the format provided in the method:
             :py:meth:`_create_user_object`. None is returned if the database
             has no users with given user_id.
         '''
         self.set_foreign_keys_support()
-        return self.user_repo.get_user(user_id)
+        return self.user_repo.get_user(user_id, nickname)
 
-    def get_user_public(self, nickname):
+    def get_user_public(self, user_id=None, nickname=None):
         '''
-        Extracts public information of a user.
-
-        :param string nickname: The nickname of the user to search for.
+        Extracts public information of a user by the user_id or nickname
+        
+        :param integer user_id: The unique ID of the user, default None.
+        :param string nickname: The nickname of the user to search for, default None.
         :return: user data dictionary with the format provided in the method:
             :py:meth:`_create_user_list_object`. None is returned if the database
             has no users with given nickname.
         '''
         self.set_foreign_keys_support()
-        return self.user_repo.get_user_public(nickname)
+        return self.user_repo.get_user_public(user_id, nickname)
 
     def get_users(self):
         '''
