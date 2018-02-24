@@ -8,7 +8,7 @@ Reference: Code taken an modified from PWP2018 exercise
 
 import sqlite3
 import src.db.constants as constants
-
+from src.db.goal_repo import GoalRepo
 
 class Connection(object):
     '''
@@ -32,6 +32,7 @@ class Connection(object):
         super(Connection, self).__init__()
         self.con = sqlite3.connect(db_path)
         self._isclosed = False
+        self.goal_repo = GoalRepo(self.con)
 
     def isclosed(self):
         '''
@@ -141,39 +142,118 @@ class Connection(object):
         # Transforms db row to python dictionary
         raise NotImplementedError("")
 
-    # TODO: Implement goals methods
     # GOAL METHODS
-    # this methods represent the db api. A description should be provided and the
-    # execution should be delegated to a separate class which deals with goals
-    # db management (can be an inner class)
-    #
-    # new methods should be added if required
-    def get_goal(self, user):
-        raise NotImplementedError("")
+    # delegate methods from the goal_repo class
+    def get_goal(self, goal_id):
+        '''
+        Extracts a goal from the database.
 
-    def get_goals(self, user_id=None):
-        raise NotImplementedError("")
+        :param goal_id: The id of the goal (int)``.
+        :return: A dictionary with the format provided in
+            :py:meth:`_create_goal_object` or None if the goal with target
+            id does not exist.
 
-    def delete_goal(self, user_id):
-        raise NotImplementedError("")
+        '''
+        self.set_foreign_keys_support()
+        return self.goal_repo.get_goal(goal_id)
 
-    def modify_goal(self):
-        # NOTE: this method should have more parameters (check exercises)
-        raise NotImplementedError("")
+    def get_goals(self, user_id=None, number_of_goals=None,
+                     before=None, after=None):
+        '''
+        Return a list of all the goals in the database filtered by the
+        conditions provided in the parameters.
 
-    def create_goal(self):
-        # NOTE: this method should have more parameters (check exercises)
-        raise NotImplementedError("")
+        :param user_id: Default None. Search goals of a user with the given
+            user_id. If this parameter is None, it returns the goals of any user
+            in the system.
+        :type user_id: int
+        :param number_of_goals: Default None. Sets the maximum number of
+            goals returning in the list. If set to None, there is no limit.
+        :type number_of_goals: int
+        :param before: Default None. All deadlines > ``before`` (UNIX timestamp)
+            are removed. If set to None, this condition is not applied.
+        :type before: long
+        :param after: Default None. All deadlines < ``after`` (UNIX timestamp)
+            are removed. If set to None, this condition is not applied.
+        :type after: long
 
-    # HELPERS FOR GOALS
-    # this methods should be in a separate class which deals with user db management (can be an inner class)
-    def _create_goal_object(self, row):
-        # Transforms db row to python dictionary
-        raise NotImplementedError("")
+        :return: A list of goals. Each goal is a dictionary containing
+            the following keys:
 
-    def _create_goal_list_object(self, row):
-        # Transforms db row to python dictionary
-        raise NotImplementedError("")
+            * ``goal_id``: integer representing the Id of the goal.
+            * ``title``: string containing the title of the goal.
+            * ``description``: string containing the description of goal.
+
+        :raises ValueError: if ``before`` or ``after`` are not valid UNIX
+            timestamps
+
+        '''
+        self.set_foreign_keys_support()
+        return self.goal_repo.get_goals(user_id, number_of_goals, before, after)
+
+    def delete_goal(self, goal_id):
+        '''
+        Delete the goal with id given as parameter.
+
+        :param int goal_id: id of the goal to remove.
+        :return: True if the goal has been deleted, False otherwise
+
+        '''
+        self.set_foreign_keys_support()
+        return self.goal_repo.delete_goal(goal_id)
+
+    def modify_goal(self, goal_id, title=None, topic=None, description=None,
+                deadline=None, status=None):
+        '''
+        Modify the title, the topic, the description, the status, and the
+        deadline of the goal with id ``goal_id``. An individual field can be
+        modified by setting the rest as None.
+
+        :param int goal_id: the id of the goal to remove.
+        :param str title: default None. The goal's title
+        :param str topic: default None. The goal's topic
+        :param str description: default None. The goal's description
+        :param int deadline: default None. The goal's deadline
+        :param int status: default None. The goal's status
+        :return: the id of the edited goal or None if the goal was
+              not found.
+
+        '''
+        self.set_foreign_keys_support()
+        return self.goal_repo.modify_goal(goal_id, title, topic, description,
+                    deadline, status)
+
+    def create_goal(self, user_id, title, topic, description, parent_id=None,
+                    deadline=None, status=0):
+        '''
+        Create a new goal with the data provided as arguments.
+
+        :param int user_id: the id of the user that created the goal
+        :param int parent_id: default to None. The goal's parent_id
+        :param str title: the goal's title
+        :param str topic: the goal's topic
+        :param str description: the goal's description.
+        :param int deadline: default to None. The goal's deadline.
+        :param int status: default to 0. The goal's status.
+
+        :return: the id of the created goal or None if the goal was
+            not found.
+
+        '''
+        self.set_foreign_keys_support()
+        return self.goal_repo.create_goal(user_id, parent_id, title, topic,
+                    description, deadline, status)
+
+    def contains_goal(self, goal_id):
+        '''
+        Checks if a goal is in the database.
+
+        :param int goal_id: Id of the goal to search.
+        :return: True if the goal is in the database. False otherwise.
+
+        '''
+        return self.goal_repo.get_goal(goal_id) is not None
+
 
     # TODO: Implement resource methods
     # RESOURCE METHODS
