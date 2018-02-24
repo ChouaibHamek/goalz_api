@@ -8,7 +8,7 @@ Reference: Code taken an modified from PWP2018 exercise
 
 import os
 import sqlite3
-import src.db.constants as constants
+from src.db import constants
 from src.db.connection import Connection
 
 

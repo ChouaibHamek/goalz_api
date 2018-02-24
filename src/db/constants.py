@@ -14,9 +14,8 @@ SQL_TURN_FOREIGN_KEY_ON = "PRAGMA foreign_keys = ON"
 SQL_TURN_FOREIGN_KEY_OFF = "PRAGMA foreign_keys = OFF"
 SQL_DELETE_USERS_DATA = "DELETE FROM users"
 SQL_DELETE_USERS_PROFILE_DATA = "DELETE FROM user_profile"
-SQL_DELETE_RESOURCES_DATA = "DELETE FROM resources"
 
-#GOALS statements
+# GOALS statements
 SQL_DELETE_GOALS_DATA = "DELETE FROM goals"
 SQL_SELECT_GOAL_BY_ID = "SELECT * FROM goals WHERE goal_id = ?"
 SQL_DELETE_GOAL_BY_ID = "DELETE FROM goals WHERE goal_id = ?"
@@ -25,9 +24,26 @@ SQL_UPDATE_GOAL = "UPDATE goals SET title = ?, topic = ?, description = ?, \
 SQL_INSERT_GOAL = 'INSERT INTO goals (parent_id, title, topic, description, \
                 deadline, status, user_id) VALUES(?,?,?,?,?,?,?)'
 # SQL STATEMENTS FOR GET GOALS FILTERS AND UPDATE GOAL ARE IMPLEMENTED
-#INSIDE GOAL_REPO FOR READABILITY AND EASE OF USE
+# INSIDE GOAL_REPO FOR READABILITY AND EASE OF USE
+
+# RESOURCES statements
+SQL_DELETE_RESOURCES_DATA = "DELETE FROM resources"
+SQL_SELECT_RESOURCE_BY_ID = 'SELECT * FROM resources WHERE resource_id = ?'
+SQL_SELECT_RESOURCES = 'SELECT * FROM resources'
+SQL_SELECT_RESOURCE_GOAL_ID_FILTER = 'goal_id = ?'
+SQL_SELECT_RESOURCE_USER_ID_FILTER = 'user_id = ?'
+SQL_SELECT_RESOURCE_LENGTH_FILTER = 'required_time < ?'
+SQL_DELETE_RESOURCE = 'DELETE FROM resources WHERE resource_id = ?'
+SQL_UPDATE_RESOURCE = 'UPDATE resources SET rating = ? WHERE resource_id = ?'
+SQL_INSERT_RESOURCE = 'INSERT INTO resources (goal_id, user_id, title,' \
+                      'link, topic, description, required_time, rating) \
+                       VALUES(?,?,?,?,?,?,?,?)'
 
 SQL_SELECT_USER_BY_ID = 'SELECT * from users WHERE user_id = ?'
+
+SQL_LIMIT_CLAUSE = ' LIMIT ?'
+SQL_WHERE_CLAUSE = ' WHERE '
+SLQ_AND_CLAUSE = ' AND '
 
 SQL_CREATE_USERS_TABLE = \
     'CREATE TABLE  users( \

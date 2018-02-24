@@ -26,3 +26,4 @@ INSERT INTO "resources" VALUES(1,2,1,'How to use skies', 'https://www.tyrol.com/
 INSERT INTO "resources" VALUES(2,4,2,'Cross fit best practices', 'https://breakingmuscle.com/fitness/the-formula-for-a-successful-crossfit-gym', 'sports','Key to success in crossfit',7,0.9);
 INSERT INTO "resources" VALUES(3,1,3,'US citizenship requirement', 'https://www.uscis.gov/us-citizenship/citizenship-through-naturalization', 'life','US is an option, although the healthcare system maybe not as good',3,0.98);
 INSERT INTO "resources" VALUES(4,5,4,'Flute techniques', 'https://www.vsl.co.at/en/Concert_flute/Playing_Techniques/', 'music','It helped me a lot to learn the basic and advanced techniques',40,0.85);
+INSERT INTO "resources" VALUES(5,5,4,'Piano techniques', 'https://www.vsl.co.at/en/Concert_piano/Playing_Techniques/', 'music','It helped me a lot to learn the basic and advanced techniques',50,0.7);
