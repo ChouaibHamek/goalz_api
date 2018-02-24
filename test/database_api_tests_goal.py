@@ -108,29 +108,6 @@ class GoalDBAPITestCase(unittest.TestCase):
         self.connection.close()
         ENGINE.clear()
 
-    def test_goals_table_created(self):
-        '''
-        Checks that the table initially contains 9 goals
-        '''
-        print('('+self.test_goals_table_created.__name__+')', \
-                  self.test_goals_table_created.__doc__)
-        #Create the SQL Statement
-        keys_on = 'PRAGMA foreign_keys = ON'
-        query = 'SELECT * FROM goals'
-        #Get the sqlite3 con from the Connection instance
-        con = self.connection.con
-        with con:
-            #Cursor and row initialization
-            con.row_factory = sqlite3.Row
-            cur = con.cursor()
-            #Provide support for foreign keys
-            cur.execute(keys_on)
-            #Execute main SQL Statement
-            cur.execute(query)
-            goals = cur.fetchall()
-            #Assert
-            self.assertEqual(len(goals), INITIAL_SIZE)
-
     def test_create_goal_object(self):
         '''
         Check that the method _create_goal_object works return adequate
@@ -170,12 +147,12 @@ class GoalDBAPITestCase(unittest.TestCase):
         self.assertDictContainsSubset(goal, GOAL2)
 
 
-    def test_get_goal_noexistingid(self):
+    def test_get_goal_non_existing_id(self):
         '''
         Test get_goal with id 300 (no-existing)
         '''
-        print('('+self.test_get_goal_noexistingid.__name__+')',\
-              self.test_get_goal_noexistingid.__doc__)
+        print('('+self.test_get_goal_non_existing_id.__name__+')',\
+              self.test_get_goal_non_existing_id.__doc__)
         #Test with an existing goal
         goal = self.connection.get_goal(WRONG_GOAL_ID)
         self.assertIsNone(goal)
@@ -259,12 +236,12 @@ class GoalDBAPITestCase(unittest.TestCase):
         self.assertIsNone(resp2)
 
 
-    def test_delete_goal_noexistingid(self):
+    def test_delete_goal_non_existing_id(self):
         '''
         Test delete_goal with  300 (no-existing)
         '''
-        print('('+self.test_delete_goal_noexistingid.__name__+')', \
-              self.test_delete_goal_noexistingid.__doc__)
+        print('('+self.test_delete_goal_non_existing_id.__name__+')', \
+              self.test_delete_goal_non_existing_id.__doc__)
         #Test with an existing goal
         resp = self.connection.delete_goal(WRONG_GOAL_ID)
         self.assertFalse(resp)
@@ -295,12 +272,12 @@ class GoalDBAPITestCase(unittest.TestCase):
         resp2 = self.connection.get_goal(GOAL1_ID)
         self.assertDictContainsSubset(resp2, GOAL1_STATUS_UPDATED)
 
-    def test_modify_goal_noexistingid(self):
+    def test_modify_goal_non_existing_id(self):
         '''
         Test modify_goal with  300 (no-existing)
         '''
-        print('('+self.test_modify_goal_noexistingid.__name__+')',\
-              self.test_modify_goal_noexistingid.__doc__)
+        print('('+self.test_modify_goal_non_existing_id.__name__+')',\
+              self.test_modify_goal_non_existing_id.__doc__)
         #Test with an existing goal
         resp = self.connection.modify_goal(WRONG_GOAL_ID, 'Done',
                 'Accomplished Lifed and Travel', 'Acquired citizenship',
@@ -342,25 +319,25 @@ class GoalDBAPITestCase(unittest.TestCase):
         resp2 = self.connection.get_goal(goal_id)
         self.assertDictContainsSubset(new_goal, resp2)
 
-    def test_create_goal_noexisting_parendid(self):
+    def test_create_goal_non_existing_parend_id(self):
         '''
         Test that None is returned if we try to create a goal with a
         none-existing parent_id
         '''
-        print('('+self.test_create_goal_noexisting_parendid.__name__+')',\
-              self.test_create_goal_noexisting_parendid.__doc__)
+        print('('+self.test_create_goal_non_existing_parend_id.__name__+')',\
+              self.test_create_goal_non_existing_parend_id.__doc__)
         goal_id = self.connection.create_goal(1, "new year, new goal",
                 "new topic", "This is described as a new goal", WRONG_GOAL_ID)
         #Check that the goal has not been created
         self.assertIsNone(goal_id)
 
-    def test_create_goal_noexisting_userid(self):
+    def test_create_goal_non_existing_user_id(self):
         '''
         Test that None is returned if we try to create a goal with a
         300 none-existing parent_id
         '''
-        print('('+self.test_create_goal_noexisting_userid.__name__+')',\
-              self.test_create_goal_noexisting_userid.__doc__)
+        print('('+self.test_create_goal_non_existing_user_id.__name__+')',\
+              self.test_create_goal_non_existing_user_id.__doc__)
         goal_id = self.connection.create_goal(WRONG_USER_ID, "new year, new goal",
                 "new topic", "This is described as a new goal")
         #Check that the goal has not been created
