@@ -18,14 +18,16 @@ SQL_DELETE_RESOURCES_DATA = "DELETE FROM resources"
 
 #GOALS statements
 SQL_DELETE_GOALS_DATA = "DELETE FROM goals"
-SQL_SELECT_GOAL = "SELECT * FROM goals WHERE goal_id = ?"
-SQL_DELETE_GOAL = "DELETE FROM goals WHERE goal_id = ?"
+SQL_SELECT_GOAL_BY_ID = "SELECT * FROM goals WHERE goal_id = ?"
+SQL_DELETE_GOAL_BY_ID = "DELETE FROM goals WHERE goal_id = ?"
 SQL_UPDATE_GOAL = "UPDATE goals SET title = ?, topic = ?, description = ?, \
                 deadline = ?, status = ? WHERE goal_id = ?"
 SQL_INSERT_GOAL = 'INSERT INTO goals (parent_id, title, topic, description, \
                 deadline, status, user_id) VALUES(?,?,?,?,?,?,?)'
 # SQL STATEMENTS FOR GET GOALS FILTERS AND UPDATE GOAL ARE IMPLEMENTED
 #INSIDE GOAL_REPO FOR READABILITY AND EASE OF USE
+
+SQL_SELECT_USER_BY_ID = 'SELECT * from users WHERE user_id = ?'
 
 SQL_CREATE_USERS_TABLE = \
     'CREATE TABLE  users( \

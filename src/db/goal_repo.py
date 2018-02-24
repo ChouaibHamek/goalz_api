@@ -58,7 +58,7 @@ class GoalRepo(object):
 
         '''
         #Create the SQL Query
-        query = constants.SQL_SELECT_GOAL
+        query = constants.SQL_SELECT_GOAL_BY_ID
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
@@ -161,7 +161,7 @@ class GoalRepo(object):
         '''
         #Create the SQL Statements
           #SQL Statement for deleting the goal entry
-        query = constants.SQL_DELETE_GOAL
+        query = constants.SQL_DELETE_GOAL_BY_ID
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
@@ -251,10 +251,29 @@ class GoalRepo(object):
         :param int deadline: the goal's deadline
         :param int status: the goal's status
 
-        :return: the id of the created goal or None if the goal was
-            not found.
+        :return: the id of the created goal or None if user or parent goals
+            were not found.
 
         '''
+        if parent_id is not None:
+            # Check if referred parent goal exists
+            query = constants.SQL_SELECT_GOAL_BY_ID
+            param_value = (parent_id,)
+            cur = self.con.cursor()
+            cur.execute(query, param_value)
+            row = cur.fetchone()
+            if row is None:
+                return None
+
+        # Check if referred user exists
+        query = constants.SQL_SELECT_USER_BY_ID
+        param_value = (user_id,)
+        cur = self.con.cursor()
+        cur.execute(query, param_value)
+        row = cur.fetchone()
+        if row is None:
+            return None
+
         #Create the SQL statment
           #SQL Statement for inserting the data
         stmnt = constants.SQL_INSERT_GOAL
