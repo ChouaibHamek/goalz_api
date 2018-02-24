@@ -536,6 +536,31 @@ class ResourceDBAPITestCase(unittest.TestCase):
                                                       'one')
         self.assertIsNone(resource_id)
 
+    def test_contains_resource(self):
+        '''
+        Check if the database contains resources with id 1 and 2
+        '''
+
+        print('('+self.test_contains_resource.__name__+')', \
+              self.test_contains_resource.__doc__)
+
+        self.assertTrue(self.connection.contains_resource(RESOURCE1['resource_id']))
+        self.assertTrue(self.connection.contains_resource(RESOURCE2['resource_id']))
+
+    def test_not_contains_resource(self):
+        '''
+        Check if the database does not contain resource with id 100 and 'one'
+        '''
+
+        print('('+self.test_not_contains_resource.__name__+')', \
+              self.test_not_contains_resource.__doc__)
+
+        self.assertFalse(self.connection.contains_resource(NON_EXISTING_ID))
+        self.assertFalse(self.connection.contains_resource(MALFORMED_ID))
+
+
+
+
 
 if __name__ == '__main__':
     print('Start running resource tests')

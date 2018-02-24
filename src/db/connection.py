@@ -201,7 +201,6 @@ class Connection(object):
             * ``rating``: resource's rating (float)
         '''
 
-
         self.set_foreign_keys_support()
         return self.resource_repo.get_resource(resource_id)
 
@@ -304,3 +303,13 @@ class Connection(object):
         self.set_foreign_keys_support()
         return self.resource_repo.create_resource(goal_id, user_id, title, link,
                                                   topic, description, required_time)
+
+    def contains_resource(self, resource_id):
+        '''
+        Checks if a resource is in the database.
+
+        :param str resource_id: Id of the resource to search.
+        :return: True if the resource is in the database. False otherwise.
+        '''
+
+        return self.get_resource(resource_id) is not None
