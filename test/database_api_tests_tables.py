@@ -1,20 +1,21 @@
 '''
-Created on 24.2.2018
+Created on 23.02.2018
+Database interface tests which are testing
+correctness of the tables' schemas and correctness of tables' creation
 
-Database interface testing to check tables has been created correctly.
-
-@author: alekszi
 '''
 
 import sqlite3, unittest
 
-from src import db.engine, db.connection, db.constants # TODO: not sure about import paths
+from src.db import engine, connection, constants
 
 #Path to the database file, different from the deployment db
-DB_PATH = 'db/goalzt_est.db' # TODO: not sure about path
-ENGINE = db.engine.Engine(DB_PATH)
+DB_PATH = 'db/goalz.db'
+ENGINE = engine.Engine(DB_PATH)
 
-INITIAL_SIZE = 20
+INITIAL_USERS_SIZE = 6
+INITIAL_GOALS_SIZE = 9
+INITIAL_RESOURCES_SIZE = 5
 
 class CreatedTablesTestCase(unittest.TestCase):
     '''
@@ -23,8 +24,8 @@ class CreatedTablesTestCase(unittest.TestCase):
     #INITIATION AND TEARDOWN METHODS
     @classmethod
     def setUpClass(cls):
-        ''' Creates the database structure. Removes first any preexisting
-            database file
+        '''
+        Creates the database structure. Removes first any preexisting database file.
         '''
         print("Testing ", cls.__name__)
         ENGINE.remove_database()
@@ -56,15 +57,12 @@ class CreatedTablesTestCase(unittest.TestCase):
         self.connection.close()
         ENGINE.clear()
 
-    def test_messages_table_schema(self):
+    def test_users_table_schema(self):
         '''
-        Checks that the messages table has the right schema.
-        
-        NOTE: Do not use Connection instance but
-        call directly SQL.
+        Checks that the USERS table has the right schema.
         '''
-        print('('+self.test_messages_table_created.__name__+')', \
-                  self.test_messages_table_created.__doc__)
+        print('('+self.test_users_table_schema.__name__+')', \
+                  self.test_users_table_schema.__doc__)
 
         con = self.connection.con
         with con:
@@ -73,38 +71,27 @@ class CreatedTablesTestCase(unittest.TestCase):
             # Retrieve column information
             # Every column will be represented by a tuple with the following attributes:
             # (id, name, type, notnull, default_value, primary_key)
-            c.execute('PRAGMA TABLE_INFO({})'.format('messages'))
+            c.execute('PRAGMA TABLE_INFO({})'.format('users'))
 
-            # collect names in a list
+            # Collect names in a list
             result = c.fetchall()
             names = [tup[1] for tup in result]
             types = [tup[2] for tup in result]
-            real_names=['message_id','title','body','timestamp','ip','timesviewed','reply_to','user_nickname','user_id','editor_nickname']
-            real_types=['INTEGER','TEXT','TEXT','INTEGER','TEXT','INTEGER','INTEGER','TEXT','INTEGER','TEXT']  
-            self.assertEquals(names, real_names)    
-            self.assertEquals(types, real_types) 
+            real_names=['user_id','nickname','registration_date','password']
+            real_types=['INTEGER','TEXT','INTEGER','TEXT']
+            # Check that names and types are correct
+            self.assertEqual(names, real_names)    
+            self.assertEqual(types, real_types)
 
-            #Check that foreign keys are correctly set
-            foreign_keys =[('users','user_id','user_id'),('users','user_nickname','nickname'),('messages','reply_to','message_id')]
-            c.execute('PRAGMA FOREIGN_KEY_LIST({})'.format('messages'))
-            result = c.fetchall()
-            result_filtered = [(tup[2], tup[3],tup[4]) for tup in result]
-            for tup in result_filtered:
-                self.assertIn(tup,foreign_keys)
-
-    def test_messages_table_created(self):
+    def test_users_table_created(self):
         '''
-        Checks that the table initially contains 20 messages (check
-        forum_data_dump.sql). 
-        
-        NOTE: Do not use Connection instance but
-        call directly SQL.
+        Checks that the USERS table initially contains INITIAL_USERS_SIZE number of users (check goalz_data_dump.sql).
         '''
-        print('('+self.test_messages_table_created.__name__+')', \
-                  self.test_messages_table_created.__doc__)
+        print('('+self.test_users_table_created.__name__+')', \
+                  self.test_users_table_created.__doc__)
         #Create the SQL Statement
         keys_on = 'PRAGMA foreign_keys = ON'
-        query = 'SELECT * FROM messages'
+        query = 'SELECT * FROM users'
         #Get the sqlite3 con from the Connection instance
         con = self.connection.con
         with con:
@@ -117,9 +104,181 @@ class CreatedTablesTestCase(unittest.TestCase):
             cur.execute(query)
             users = cur.fetchall()
             #Assert
-            self.assertEqual(len(users), INITIAL_SIZE)
+            self.assertEqual(len(users), INITIAL_USERS_SIZE)
 
-    
+    def test_user_profile_table_schema(self):
+        '''
+        Checks that the USER_PROFILE table has the right schema.
+        '''
+        print('(' + self.test_user_profile_table_schema.__name__ + ')', \
+              self.test_user_profile_table_schema.__doc__)
+
+        con = self.connection.con
+        with con:
+            c = con.cursor()
+
+            # Retrieve column information
+            # Every column will be represented by a tuple with the following attributes:
+            # (id, name, type, notnull, default_value, primary_key)
+            c.execute('PRAGMA TABLE_INFO({})'.format('user_profile'))
+
+            # Collect names in a list
+            result = c.fetchall()
+            names = [tup[1] for tup in result]
+            types = [tup[2] for tup in result]
+            real_names = ['user_profile_id', 'user_id', 'firstname', 'lastname', 'email', 'website', 'rating', 'age', 'gender']
+            real_types = ['INTEGER', 'INTEGER', 'TEXT', 'TEXT', 'TEXT', 'TEXT', 'REAL', 'INTEGER', 'TEXT']
+            # Check that names and types are correct
+            self.assertEqual(names, real_names)
+            self.assertEqual(types, real_types)
+
+            # Check that foreign keys are correctly set
+            foreign_keys = [('users', 'user_id', 'user_id')]
+            c.execute('PRAGMA FOREIGN_KEY_LIST({})'.format('user_profile'))
+            result = c.fetchall()
+            result_filtered = [(tup[2], tup[3],tup[4]) for tup in result]
+            for tup in result_filtered:
+                self.assertIn(tup, foreign_keys)
+
+    def test_user_profile_table_created(self):
+        '''
+        Checks that the USER_PROFILE table initially contains INITIAL_USERS_SIZE number of user_profiles (check goalz_data_dump.sql).
+        '''
+        print('(' + self.test_user_profile_table_created.__name__ + ')', \
+              self.test_user_profile_table_created.__doc__)
+        # Create the SQL Statement
+        keys_on = 'PRAGMA foreign_keys = ON'
+        query = 'SELECT * FROM user_profile'
+        # Get the sqlite3 con from the Connection instance
+        con = self.connection.con
+        with con:
+            # Cursor and row initialization
+            con.row_factory = sqlite3.Row
+            cur = con.cursor()
+            # Provide support for foreign keys
+            cur.execute(keys_on)
+            # Execute main SQL Statement
+            cur.execute(query)
+            user_profiles = cur.fetchall()
+            # Assert
+            self.assertEqual(len(user_profiles), INITIAL_USERS_SIZE)
+
+    def test_goals_table_schema(self):
+        '''
+        Checks that the GOALS table has the right schema.
+        '''
+        print('(' + self.test_goals_table_schema.__name__ + ')', \
+              self.test_goals_table_schema.__doc__)
+
+        con = self.connection.con
+        with con:
+            c = con.cursor()
+
+            # Retrieve column information
+            # Every column will be represented by a tuple with the following attributes:
+            # (id, name, type, notnull, default_value, primary_key)
+            c.execute('PRAGMA TABLE_INFO({})'.format('goals'))
+
+            # Collect names in a list
+            result = c.fetchall()
+            names = [tup[1] for tup in result]
+            types = [tup[2] for tup in result]
+            real_names = ['goal_id', 'parent_id', 'user_id', 'title', 'topic', 'description', 'deadline', 'status']
+            real_types = ['INTEGER', 'INTEGER', 'INTEGER', 'TEXT', 'TEXT', 'TEXT', 'INTEGER', 'INTEGER']
+            # Check that names and types are correct
+            self.assertEqual(names, real_names)
+            self.assertEqual(types, real_types)
+
+            # Check that foreign keys are correctly set
+            foreign_keys = [('goals', 'parent_id', 'goal_id'),
+                            ('users', 'user_id', 'user_id')]
+            c.execute('PRAGMA FOREIGN_KEY_LIST({})'.format('goals'))
+            result = c.fetchall()
+            result_filtered = [(tup[2], tup[3], tup[4]) for tup in result]
+            for tup in result_filtered:
+                self.assertIn(tup, foreign_keys)
+
+    def test_goals_table_created(self):
+        '''
+        Checks that the GOALS table initially contains INITIAL_GOALS_SIZE number of goals (check goalz_data_dump.sql).
+        '''
+        print('(' + self.test_goals_table_created.__name__ + ')', \
+              self.test_goals_table_created.__doc__)
+        # Create the SQL Statement
+        keys_on = 'PRAGMA foreign_keys = ON'
+        query = 'SELECT * FROM goals'
+        # Get the sqlite3 con from the Connection instance
+        con = self.connection.con
+        with con:
+            # Cursor and row initialization
+            con.row_factory = sqlite3.Row
+            cur = con.cursor()
+            # Provide support for foreign keys
+            cur.execute(keys_on)
+            # Execute main SQL Statement
+            cur.execute(query)
+            goals = cur.fetchall()
+            # Assert
+            self.assertEqual(len(goals), INITIAL_GOALS_SIZE)
+
+    def test_resources_table_schema(self):
+        '''
+        Checks that the RESOURCES table has the right schema.
+        '''
+        print('(' + self.test_resources_table_schema.__name__ + ')', \
+              self.test_resources_table_schema.__doc__)
+
+        con = self.connection.con
+        with con:
+            c = con.cursor()
+
+            # Retrieve column information
+            # Every column will be represented by a tuple with the following attributes:
+            # (id, name, type, notnull, default_value, primary_key)
+            c.execute('PRAGMA TABLE_INFO({})'.format('resources'))
+
+            # Collect names in a list
+            result = c.fetchall()
+            names = [tup[1] for tup in result]
+            types = [tup[2] for tup in result]
+            real_names = ['resource_id', 'goal_id', 'user_id', 'title', 'link', 'topic', 'description', 'required_time', 'rating']
+            real_types = ['INTEGER', 'INTEGER', 'INTEGER', 'TEXT', 'TEXT', 'TEXT', 'TEXT', 'INTEGER', 'REAL']
+            # Check that names and types are correct
+            self.assertEqual(names, real_names)
+            self.assertEqual(types, real_types)
+
+            # Check that foreign keys are correctly set
+            foreign_keys = [('goals', 'goal_id', 'goal_id'),
+                            ('users', 'user_id', 'user_id')]
+            c.execute('PRAGMA FOREIGN_KEY_LIST({})'.format('resources'))
+            result = c.fetchall()
+            result_filtered = [(tup[2], tup[3], tup[4]) for tup in result]
+            for tup in result_filtered:
+                self.assertIn(tup, foreign_keys)
+
+    def test_resources_table_created(self):
+        '''
+        Checks that the RESOURCES table initially contains INITIAL_RESOURCES_SIZE number of resources (check goalz_data_dump.sql).
+        '''
+        print('(' + self.test_goals_table_created.__name__ + ')', \
+              self.test_goals_table_created.__doc__)
+        # Create the SQL Statement
+        keys_on = 'PRAGMA foreign_keys = ON'
+        query = 'SELECT * FROM resources'
+        # Get the sqlite3 con from the Connection instance
+        con = self.connection.con
+        with con:
+            # Cursor and row initialization
+            con.row_factory = sqlite3.Row
+            cur = con.cursor()
+            # Provide support for foreign keys
+            cur.execute(keys_on)
+            # Execute main SQL Statement
+            cur.execute(query)
+            resources = cur.fetchall()
+            # Assert
+            self.assertEqual(len(resources), INITIAL_RESOURCES_SIZE)
+
 
 if __name__ == '__main__':
     print('Start running database tests')
