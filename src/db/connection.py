@@ -179,25 +179,128 @@ class Connection(object):
 
     # RESOURCE METHODS
     def get_resource(self, resource_id):
+        '''
+        Extracts a resource from the database.
+
+        In order to maintain a clear separation of responsibilities this method
+        delegates the execution to the corresponding method from
+        :py:class:`ResourceRepo' and returns the result
+
+        :param int resource_id: Id of the resource to be retrieved
+        :return: A dictionary with the format provided bellow or None if the resource with target
+            id does not exist.
+
+            * ``resource_id``: id of the resource (int)
+            * ``goal_id``: id of the goal to which this resource was attached (int)
+            * ``user_id``: id of the user who posted this resource (int)
+            * ``title``: resource's title (string)
+            * ``link``: location of the resource provided as web URL (string)
+            * ``topic``: resource's topic (string)
+            * ``description``: resource's description (string)
+            * ``required_time``: number of minutes to assimilate the resource (int)
+            * ``rating``: resource's rating (float)
+        '''
+
+
         self.set_foreign_keys_support()
         return self.resource_repo.get_resource(resource_id)
 
     def get_resources(self, goal_id=None, user_id=None,
                       number_of_resource=None, max_length=None):
+        '''
+        Return a list of all the resources in the database filtered by the
+        conditions provided in the parameters.
+
+        In order to maintain a clear separation of responsibilities this method
+        delegates the execution to the corresponding method from
+        :py:class:`ResourceRepo' and returns the result
+
+        :param goal_id: Default is None. Search resources of the goal with the given goal_id.
+                        If this parameter is None, it returns the resources of
+                        all the goals in the system.
+        :type goal_id: int
+        :param user_id: Default is None. Search resources of the user with the given user_id.
+                        If this parameter is None, it returns the resources of
+                        all the users in the system.
+        :type user_id: int
+        :param number_of_resource: Default is None. Sets the maximum number of resources to return
+                                   in the list. If set to None, there is no limit.
+        :type number_of_resource: int
+        :param max_length: Default is None. All resources with a required time to complete greater
+                           than max_length are removed. If is set to None, this
+                           condition is not applied
+        :type max_length: int
+
+        :return: A list of resources. Each resource is a dictionary of items with the
+                 following format
+
+                 * ``resource_id``: id of the resource (int)
+                 * ``title``: resource's title (string)
+                 * ``description``: resource's description (string)
+        '''
+
         self.set_foreign_keys_support()
         return self.resource_repo.get_resources(goal_id, user_id,
                                                 number_of_resource, max_length)
 
     def delete_resource(self, resource_id):
+        '''
+        Delete the resource with id given as parameter.
+
+        In order to maintain a clear separation of responsibilities this method
+        delegates the execution to the corresponding method from
+        :py:class:`ResourceRepo' and returns the result
+
+        :param int resource_id: Id of the resource to remove.
+        :return: True if the resource has been deleted, False otherwise
+        '''
+
         self.set_foreign_keys_support()
         return self.resource_repo.delete_resource(resource_id)
 
     def modify_resource(self, resource_id, rating):
+        '''
+        Modify the rating of the resource with id ``resource_id``
+
+        In order to maintain a clear separation of responsibilities this method
+        delegates the execution to the corresponding method from
+        :py:class:`ResourceRepo' and returns the result
+
+        :param int resource_id: The id of the resource to modify.
+        :param rating: The resource's rating
+        :type rating: float
+        :return: The id of the modified resource or None. None is returned
+                 if the resource was not found or if the rating parameter is
+                 not a float value.
+        '''
+
         self.set_foreign_keys_support()
         return self.resource_repo.modify_resource(resource_id, rating)
 
     def create_resource(self, goal_id, user_id, title, link,
                         topic, description=None, required_time=None):
+        '''
+        Create a new resource with the data provided as arguments.
+
+        In order to maintain a clear separation of responsibilities this method
+        delegates the execution to the corresponding method from
+        :py:class:`ResourceRepo' and returns the result
+
+        :param int goal_id: Id of the goal for which the resource was posted
+        :param int user_id: Id of the user who posted the resource
+        :param str title: The title of the resource
+        :param str link: The resource's web URL
+        :param str topic: The topic of the resource provided as text
+        :param str description: Default = None. The description of the request
+        :param str description: Default = None. Estimate of the number of minutes required
+                                to assimilate the resource
+
+        :return: the id of the created message or None. None is returned if
+                 the resource was not found, or the specified goal does not
+                 exists in the database, or the specified user does not
+                 exist in the database
+        '''
+
         self.set_foreign_keys_support()
         return self.resource_repo.create_resource(goal_id, user_id, title, link,
                                                   topic, description, required_time)

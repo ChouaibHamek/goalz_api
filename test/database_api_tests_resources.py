@@ -1,9 +1,32 @@
+'''
+Created on 23.02.2018
+Database interface testing for all resources related methods.
+
+A Resource object is a dictionary which contains the following keys:
+      - resource_id: id of the resource (int)
+      - goal_id: id of the goal to which this resource was attached (int)
+      - user_id: id of the user who posted this resource (int)
+      - title: resource's title (string)
+      - link: location of the resource provided as web URL (string)
+      - topic: resource's topic (string)
+      - description: resource's description (string)
+      - required_time: number of minutes to assimilate the resource (int)
+      - rating: resource's rating (float)
+
+A resources' list has the following format:
+[{'resource_id':'', 'title':'', 'description':''},
+ {'resource_id':'', 'title':'', 'description':''}]
+
+Reference: Code taken an modified from PWP2018 exercise
+'''
+
 import sqlite3
 import unittest
 
 from src.db.engine import Engine
 from src.db.connection import Connection
 
+# CONSTANTS DEFINING DIFFERENT RESOURCES AND RESOURCES' PROPERTIES
 RESOURCE1 = {'resource_id': 1, 'goal_id': 2,
              'user_id': 1, 'title': 'How to use skies',
              'link': 'https://www.tyrol.com/things-to-do/sports/cross-country-skiing/how-to-get-started',
@@ -48,9 +71,6 @@ VALID_RESOURCES = (RESOURCE1, RESOURCE2, RESOURCE3, RESOURCE4, RESOURCE5)
 MALFORMED_ID = 'one'
 NON_EXISTING_ID = 100
 
-TEST_DB_PATH = 'db/forum_test.db'
-ENGINE = Engine(TEST_DB_PATH)
-
 TEST_GOAL_ID = 5
 VALID_RESOURCE_IDS_FOR_TEST_GOAL = (4, 5)
 VALID_RESOURCES_FOR_TEST_GOAL = (RESOURCE4, RESOURCE5)
@@ -65,6 +85,10 @@ VALID_RESOURCE_IDS_FOR_TEST_MAX_TIME = (2, 3)
 VALID_RESOURCES_FOR_TEST_MAX_TIME = (RESOURCE2, RESOURCE3)
 
 NUM_FIELDS_IN_LIST_ITEM = 3
+
+# Path to the database file, different from the deployment db
+TEST_DB_PATH = 'db/forum_test.db'
+ENGINE = Engine(TEST_DB_PATH)
 
 
 class ResourceDBAPITestCase(unittest.TestCase):
