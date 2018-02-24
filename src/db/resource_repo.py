@@ -51,7 +51,6 @@ class ResourceRepo(object):
             query += constants.SQL_LIMIT_CLAUSE
             parameters.append(str(number_of_resource))
 
-        print(query)
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
         cur.execute(query, tuple(parameters))
@@ -67,10 +66,39 @@ class ResourceRepo(object):
         return resources
 
     def delete_resource(self, resource_id):
-        raise NotImplementedError("")
+        query = constants.SQL_DELETE_RESOURCE
+        param_value = (resource_id,)
 
-    def modify_resource(self, rating):
-        raise NotImplementedError("")
+        cur = self.con.cursor()
+        cur.execute(query, param_value)
+        self.con.commit()
+
+        if cur.rowcount < 1:
+            return False
+        return True
+
+    def modify_resource(self, resource_id, rating):
+        cur = self.con.cursor();
+
+        # Part 1 - check if message exists
+        query = constants.SQL_SELECT_RESOURCE_BY_ID
+        param_value = (resource_id,)
+        cur.execute(query, param_value)
+
+        row = cur.fetchone()
+        if row is not None:
+            # Part 2 - execute update
+            if not isinstance(rating, float):
+                return None
+            query = constants.SQL_UPDATE_RESOURCE
+            param_value = (rating, resource_id)
+            cur.execute(query, param_value)
+            self.con.commit()
+
+            if cur.rowcount > 0:
+                return resource_id
+
+        return None
 
     def create_resource(self, goal_id, user_id, title, link, topic, description, required_time):
         raise NotImplementedError("")

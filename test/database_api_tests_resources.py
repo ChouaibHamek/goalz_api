@@ -30,6 +30,12 @@ RESOURCE5 = {'resource_id': 5, 'goal_id': 5,
              'topic': 'music', 'description': 'It helped me a lot to learn the basic and advanced techniques',
              'required_time': 50, 'rating': 0.7}
 
+RESOURCE1_MODIFIED = {'resource_id': 1, 'goal_id': 2,
+                      'user_id': 1, 'title': 'How to use skies',
+                      'link': 'https://www.tyrol.com/things-to-do/sports/cross-country-skiing/how-to-get-started',
+                      'topic': 'sports', 'description': 'Helpful if you are really into skiing',
+                      'required_time': 12, 'rating': 0.5}
+
 VALID_RESOURCE_IDS = (1, 2, 3, 4, 5)
 VALID_RESOURCES = (RESOURCE1, RESOURCE2, RESOURCE3, RESOURCE4, RESOURCE5)
 
@@ -324,6 +330,88 @@ class ResourceDBAPITestCase(unittest.TestCase):
         resource = resources[0]
         self.assertEqual(len(resource), NUM_FIELDS_IN_LIST_ITEM)
         self.assertDictContainsSubset(resource, VALID_RESOURCES[3])
+
+    def test_delete_resource(self):
+        '''
+        Test that the resource with id 1 is deleted
+        '''
+
+        print('(' + self.test_delete_resource.__name__ + ')',
+              self.test_delete_resource.__doc__)
+
+        response = self.connection.delete_resource(RESOURCE1['resource_id'])
+        self.assertTrue(response)
+
+        response = self.connection.get_resource(RESOURCE1['resource_id'])
+        self.assertIsNone(response)
+
+    def test_delete_resource_malformed_id(self):
+        '''
+        Test that trying to delete resource with id ='one' fails
+        '''
+        print('(' + self.test_delete_resource_malformed_id.__name__ + ')',
+              self.test_delete_resource_malformed_id.__doc__)
+
+        response = self.connection.delete_resource(MALFORMED_ID)
+        self.assertFalse(response)
+
+    def test_delete_resource_non_existing_id(self):
+        '''
+        Test that trying to delete resource with id ='100' (no-existing) fails
+        '''
+
+        print('(' + self.test_delete_resource_non_existing_id.__name__ + ')', \
+              self.test_delete_resource_non_existing_id.__doc__)
+
+        response = self.connection.delete_resource(NON_EXISTING_ID)
+        self.assertFalse(response)
+
+    def test_modify_resource(self):
+        '''
+        Test that the resource is modified
+        '''
+
+        print('(' + self.test_modify_resource.__name__ + ')',
+              self.test_modify_resource.__doc__)
+
+        response = self.connection.modify_resource(RESOURCE1['resource_id'], 0.5)
+        self.assertEqual(response, RESOURCE1['resource_id'])
+
+        response = self.connection.get_resource(RESOURCE1['resource_id'])
+        self.assertEqual(response, RESOURCE1_MODIFIED)
+
+    def test_modify_message_malformed_id(self):
+        '''
+        Test that trying to modify resource with id ='one' fails
+        '''
+
+        print('(' + self.test_modify_message_malformed_id.__name__ + ')',
+              self.test_modify_message_malformed_id.__doc__)
+
+        response = self.connection.modify_resource(MALFORMED_ID, 0.5)
+        self.assertIsNone(response)
+
+    def test_modify_message_non_existing_id(self):
+        '''
+        Test that trying to modify resource with id ='100' (non existing) fails
+        '''
+
+        print('(' + self.test_modify_message_non_existing_id.__name__ + ')',
+              self.test_modify_message_non_existing_id.__doc__)
+
+        response = self.connection.modify_resource(NON_EXISTING_ID, 0.5)
+        self.assertIsNone(response)
+
+    def test_modify_resource_malformed_rating(self):
+        '''
+        Test that trying to modify resource with rating ='ten' (bad type) fails
+        '''
+
+        print('(' + self.test_modify_resource_malformed_rating.__name__ + ')',
+              self.test_modify_resource_malformed_rating.__doc__)
+
+        response = self.connection.modify_resource(RESOURCE1['resource_id'], 'ten')
+        self.assertIsNone(response)
 
 
 if __name__ == '__main__':

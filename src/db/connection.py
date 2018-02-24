@@ -187,11 +187,14 @@ class Connection(object):
         self.set_foreign_keys_support()
         return self.resource_repo.get_resources(goal_id, user_id,
                                                 number_of_resource, max_length)
+
     def delete_resource(self, resource_id):
+        self.set_foreign_keys_support()
         return self.resource_repo.delete_resource(resource_id)
 
-    def modify_resource(self, rating):
-        return self.resource_repo.modify_resource(rating)
+    def modify_resource(self, resource_id, rating):
+        self.set_foreign_keys_support()
+        return self.resource_repo.modify_resource(resource_id, rating)
 
     def create_resource(self, goal_id, user_id, title, link,
                         topic, description=None, required_time=None):
