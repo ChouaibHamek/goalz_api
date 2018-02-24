@@ -251,7 +251,6 @@ class GoalRepo(object):
 
         query+= " WHERE goal_id = %s" % str(goal_id)
 
-        print(query)
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
