@@ -100,8 +100,41 @@ class ResourceRepo(object):
 
         return None
 
-    def create_resource(self, goal_id, user_id, title, link, topic, description, required_time):
-        raise NotImplementedError("")
+    def create_resource(self, goal_id, user_id, title,
+                        link, topic, description, required_time):
+
+        # Check if required_time is a number
+        if required_time and not isinstance(required_time, int):
+                return None
+
+        # Check if referred goal exists
+        query = constants.SQL_SELECT_GOAL_BY_ID
+        param_value = (goal_id,)
+        cur = self.con.cursor()
+        cur.execute(query, param_value)
+        row = cur.fetchone()
+        if row is None:
+            return None
+
+        # Check if referred goal exists
+        query = constants.SQL_SELECT_USER_BY_ID
+        param_value = (user_id,)
+        cur = self.con.cursor()
+        cur.execute(query, param_value)
+        row = cur.fetchone()
+        if row is None:
+            return None
+
+        statement = constants.SQL_INSERT_RESOURCE
+        param_value = (goal_id, user_id, title, link, topic,
+                       description, required_time, 0)
+
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        cur.execute(statement, param_value)
+        self.con.commit()
+
+        return cur.lastrowid
 
     # HELPERS FOR GOALS
     def _create_resource_object(self, row):

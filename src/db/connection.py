@@ -198,5 +198,6 @@ class Connection(object):
 
     def create_resource(self, goal_id, user_id, title, link,
                         topic, description=None, required_time=None):
+        self.set_foreign_keys_support()
         return self.resource_repo.create_resource(goal_id, user_id, title, link,
                                                   topic, description, required_time)

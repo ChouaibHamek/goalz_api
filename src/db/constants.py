@@ -24,6 +24,12 @@ SQL_SELECT_RESOURCE_USER_ID_FILTER = 'user_id = ?'
 SQL_SELECT_RESOURCE_LENGTH_FILTER = 'required_time < ?'
 SQL_DELETE_RESOURCE = 'DELETE FROM resources WHERE resource_id = ?'
 SQL_UPDATE_RESOURCE = 'UPDATE resources SET rating = ? WHERE resource_id = ?'
+SQL_INSERT_RESOURCE = 'INSERT INTO resources (goal_id, user_id, title,' \
+                      'link, topic, description, required_time, rating) \
+                       VALUES(?,?,?,?,?,?,?,?)'
+
+SQL_SELECT_GOAL_BY_ID = 'SELECT * from goals WHERE goal_id = ?'
+SQL_SELECT_USER_BY_ID = 'SELECT * from users WHERE user_id = ?'
 
 SQL_LIMIT_CLAUSE = ' LIMIT ?'
 SQL_WHERE_CLAUSE = ' WHERE '

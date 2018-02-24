@@ -36,6 +36,12 @@ RESOURCE1_MODIFIED = {'resource_id': 1, 'goal_id': 2,
                       'topic': 'sports', 'description': 'Helpful if you are really into skiing',
                       'required_time': 12, 'rating': 0.5}
 
+NEW_RESOURCE = {'resource_id': 6, 'goal_id': 2,
+                'user_id': 1, 'title': 'This is a purely academic hobby',
+                'link': 'https://www.newhoby.com',
+                'topic': 'academic', 'description': 'Nothing to describe',
+                'required_time': 120, 'rating': 0}
+
 VALID_RESOURCE_IDS = (1, 2, 3, 4, 5)
 VALID_RESOURCES = (RESOURCE1, RESOURCE2, RESOURCE3, RESOURCE4, RESOURCE5)
 
@@ -412,6 +418,99 @@ class ResourceDBAPITestCase(unittest.TestCase):
 
         response = self.connection.modify_resource(RESOURCE1['resource_id'], 'ten')
         self.assertIsNone(response)
+
+    def test_create_resource(self):
+        '''
+        Test that a new resource can be created
+        '''
+
+        print('(' + self.test_create_resource.__name__ + ')',
+              self.test_create_resource.__doc__)
+
+        resource_id = self.connection.create_resource(NEW_RESOURCE['goal_id'],
+                                                      NEW_RESOURCE['user_id'],
+                                                      NEW_RESOURCE['title'],
+                                                      NEW_RESOURCE['link'],
+                                                      NEW_RESOURCE['topic'],
+                                                      NEW_RESOURCE['description'],
+                                                      NEW_RESOURCE['required_time'])
+        self.assertIsNotNone(resource_id)
+
+        response = self.connection.get_resource(resource_id)
+        self.assertDictContainsSubset(NEW_RESOURCE, response)
+
+    def test_create_resource_default_fields(self):
+        '''
+        Test that a new resource can be created with default fields
+        '''
+
+        print('(' + self.test_create_resource_default_fields.__name__ + ')',
+              self.test_create_resource_default_fields.__doc__)
+
+        resource_id = self.connection.create_resource(NEW_RESOURCE['goal_id'],
+                                                      NEW_RESOURCE['user_id'],
+                                                      NEW_RESOURCE['title'],
+                                                      NEW_RESOURCE['link'],
+                                                      NEW_RESOURCE['topic'])
+        self.assertIsNotNone(resource_id)
+
+        new_resource = NEW_RESOURCE
+        new_resource['description'] = None
+        new_resource['required_time'] = None
+
+        response = self.connection.get_resource(resource_id)
+        self.assertDictContainsSubset(new_resource, response)
+
+    def test_create_resource_non_existing_user(self):
+        '''
+        Test that create_resource method fails for entries with non existing user
+        '''
+
+        print('(' + self.test_create_resource_non_existing_user.__name__ + ')',
+              self.test_create_resource_non_existing_user.__doc__)
+
+        resource_id = self.connection.create_resource(NEW_RESOURCE['goal_id'],
+                                                      NON_EXISTING_ID,
+                                                      NEW_RESOURCE['title'],
+                                                      NEW_RESOURCE['link'],
+                                                      NEW_RESOURCE['topic'],
+                                                      NEW_RESOURCE['description'],
+                                                      NEW_RESOURCE['required_time'])
+        self.assertIsNone(resource_id)
+
+    def test_create_resource_non_existing_goal(self):
+        '''
+        Test that create_resource method fails for entries with non existing goal
+        '''
+
+        print('(' + self.test_create_resource_non_existing_goal.__name__ + ')',
+              self.test_create_resource_non_existing_goal.__doc__)
+
+        resource_id = self.connection.create_resource(NON_EXISTING_ID,
+                                                      NEW_RESOURCE['user_id'],
+                                                      NEW_RESOURCE['title'],
+                                                      NEW_RESOURCE['link'],
+                                                      NEW_RESOURCE['topic'],
+                                                      NEW_RESOURCE['description'],
+                                                      NEW_RESOURCE['required_time'])
+        self.assertIsNone(resource_id)
+
+    def test_create_resource_required_time_non_numerical(self):
+        '''
+        Test that create_resource method fails for an non numerical required time
+        '''
+
+        print('(' + self.test_create_resource_required_time_non_numerical.__name__ + ')',
+              self.test_create_resource_required_time_non_numerical.__doc__)
+
+        resource_id = self.connection.create_resource(NEW_RESOURCE['goal_id'],
+                                                      NEW_RESOURCE['user_id'],
+                                                      NEW_RESOURCE['title'],
+                                                      NEW_RESOURCE['link'],
+                                                      NEW_RESOURCE['topic'],
+                                                      NEW_RESOURCE['description'],
+                                                      'one')
+        self.assertIsNone(resource_id)
 
 
 if __name__ == '__main__':
