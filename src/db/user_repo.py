@@ -2,7 +2,7 @@
 '''
 Created on 23.02.2018
 
-Provides the database API to access the goal tracker's persistent data.
+Provides method to access and manipulate data from the "user" table
 
 Reference: Code adapted and modified from PWP2018 exercise
 '''
@@ -11,7 +11,19 @@ import src.db.constants as constants
 import time, sqlite3
 
 class UserRepo(object):
+     '''
+    Methods to manipulate "user" table in the Goalz database
 
+    The sqlite3 connection instance is received as a constructor parameter and
+    is accessible to all the methods of this class through the
+    :py:attr:`self.con` attribute.
+
+    Methods of this class **MUST** not be accessed directly. All the calls to
+    the database should be made through the API provided by :py:class:`Connection`
+
+    :param con: Connection to an SqlLite database
+    :type con: sqlite3.Connection
+    '''
     def __init__(self, con):
         super(UserRepo, self).__init__()
         self.con = con

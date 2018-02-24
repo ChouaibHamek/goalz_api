@@ -147,35 +147,6 @@ class UserDBAPITestCase(unittest.TestCase):
         self.connection.close()
         ENGINE.clear()
 
-    def test_users_table_created(self):
-        '''
-        Checks that the table initially contains 6 users
-        '''
-        print('('+self.test_users_table_created.__name__+')', \
-              self.test_users_table_created.__doc__)
-        #Create the SQL Statement
-        keys_on = 'PRAGMA foreign_keys = ON'
-        query1 = 'SELECT * FROM users'
-        query2 = 'SELECT * FROM user_profile'
-        #Connects to the database.
-        con = self.connection.con
-        with con:
-            #Cursor and row initialization
-            con.row_factory = sqlite3.Row
-            cur = con.cursor()
-            #Provide support for foreign keys
-            cur.execute(keys_on)
-            #Execute main SQL Statement
-            cur.execute(query1)
-            users = cur.fetchall()
-            #Assert
-            self.assertEqual(len(users), INITIAL_SIZE)
-            #Check the user_profile:
-            cur.execute(query2)
-            users = cur.fetchall()
-            #Assert
-            self.assertEqual(len(users), INITIAL_SIZE)
-
     def test_create_user_object(self):
         '''
         Check that the method create_user_object works return adequate values
@@ -206,7 +177,7 @@ class UserDBAPITestCase(unittest.TestCase):
 
     def test_get_user_by_id(self):
         '''
-        Test get_user with id of Chouaib and Daniel
+        Test get_user with id (USER1_ID and USER2_ID)
         '''
         print('('+self.test_get_user_by_id.__name__+')', \
               self.test_get_user_by_id.__doc__)
@@ -232,7 +203,7 @@ class UserDBAPITestCase(unittest.TestCase):
 
     def test_get_user_public_by_id(self):
         '''
-        Test get_user_public with id of Chouaib and Daniel
+        Test get_user_public with id (USER1_ID and USER2_ID)
         '''
         print('('+self.test_get_user_public_by_id.__name__+')', \
               self.test_get_user_public_by_id.__doc__)
@@ -362,12 +333,12 @@ class UserDBAPITestCase(unittest.TestCase):
         self.assertEqual(profile['email'], resp_r_profile['email'])
         self.assertEqual(profile['age'], resp_r_profile['age'])
 
-    def test_modify_user_noexistingnickname(self):
+    def test_modify_user_non_existing_nickname(self):
         '''
         Test modify_user with  user Angelia (no-existing)
         '''
-        print('('+self.test_modify_user_noexistingnickname.__name__+')', \
-              self.test_modify_user_noexistingnickname.__doc__)
+        print('('+self.test_modify_user_non_existing_nickname.__name__+')', \
+              self.test_modify_user_non_existing_nickname.__doc__)
         #Test with an existing user
         resp = self.connection.modify_user(USER_WRONG_ID, MODIFIED_USER1)
         self.assertIsNone(resp)
