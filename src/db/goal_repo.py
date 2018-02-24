@@ -1,7 +1,7 @@
 '''
 Created on 23.02.2018
 
-Provides the database API to access the goal tracker's persistent data.
+Provides method to access and manipulate data from the "goal" table
 
 Reference: Code adapted and modified from PWP2018 exercise
 '''
@@ -9,7 +9,19 @@ import src.db.constants as constants
 import sqlite3
 
 class GoalRepo(object):
+    '''
+    Methods to manipulate "goal" table in the Goalz database
 
+    The sqlite3 connection instance is received as a constructor parameter and
+    is accessible to all the methods of this class through the
+    :py:attr:`self.con` attribute.
+
+    Methods of this class **MUST** not be accessed directly. All the calls to
+    the database should be made through the API provided by :py:class:`Connection`
+
+    :param con: Connection to an SqlLite database
+    :type con: sqlite3.Connection
+    '''
     def __init__(self, con):
         super(GoalRepo, self).__init__()
         self.con = con
@@ -40,6 +52,19 @@ class GoalRepo(object):
         return goals
 
     def _create_goal_list_object(self, row):
+        '''
+        Same as :py:meth:`_create_resource_object`. However, the resulting
+        dictionary is targeted to build resources in a list.
+
+        :param row: The row obtained from the database.
+        :type row: sqlite3.Row
+        :return: A dictionary containing the following keys:
+
+            * ``goal_id``: id of the goal (int)
+            * ``title``: goal's title (string)
+            * ``topic``: goal's topic (string)
+            * ``description``: resource's description (string)
+        '''
         return {
             'goal_id': row['goal_id'],
             'title': row['title'],

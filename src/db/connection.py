@@ -145,6 +145,15 @@ class Connection(object):
     # GOAL METHODS
     # delegate methods from the goal_repo class
     def get_goal(self, goal_id):
+        '''
+        Extracts a goal from the database.
+
+        :param goal_id: The id of the goal (int)``.
+        :return: A dictionary with the format provided in
+            :py:meth:`_create_goal_object` or None if the goal with target
+            id does not exist.
+
+        '''
         self.set_foreign_keys_support()
         return self.goal_repo.get_goal(goal_id)
 
@@ -174,9 +183,6 @@ class Connection(object):
             * ``goal_id``: integer representing the Id of the goal.
             * ``title``: string containing the title of the goal.
             * ``description``: string containing the description of goal.
-
-            Note that all values in the returned dictionary are string unless
-            otherwise stated.
 
         :raises ValueError: if ``before`` or ``after`` are not valid UNIX
             timestamps
