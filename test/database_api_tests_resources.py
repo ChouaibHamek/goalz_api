@@ -87,7 +87,7 @@ VALID_RESOURCES_FOR_TEST_MAX_TIME = (RESOURCE2, RESOURCE3)
 NUM_FIELDS_IN_LIST_ITEM = 3
 
 # Path to the database file, different from the deployment db
-TEST_DB_PATH = 'db/forum_test.db'
+TEST_DB_PATH = 'db/goalz_test.db'
 ENGINE = Engine(TEST_DB_PATH)
 
 
