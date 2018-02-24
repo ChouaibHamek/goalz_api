@@ -559,9 +559,6 @@ class ResourceDBAPITestCase(unittest.TestCase):
         self.assertFalse(self.connection.contains_resource(MALFORMED_ID))
 
 
-
-
-
 if __name__ == '__main__':
     print('Start running resource tests')
     unittest.main()
