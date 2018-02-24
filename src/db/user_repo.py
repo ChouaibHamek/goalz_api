@@ -1,4 +1,4 @@
-    
+
 '''
 Created on 23.02.2018
 
@@ -6,13 +6,14 @@ Provides the database API to access the goal tracker's persistent data.
 
 Reference: Code adapted and modified from PWP2018 exercise
 '''
+from datetime import datetime
 import src.db.constants as constants
-import sqlite3
+import time, sqlite3
 
 class UserRepo(object):
 
     def __init__(self, con):
-        super(Connection, self).__init__()
+        super(UserRepo, self).__init__()
         self.con = con
 
     def get_user_public(self, nickname):
@@ -87,7 +88,7 @@ class UserRepo(object):
 
         :return: list of Users of the database. Each user is a dictionary
             with the format provided in the method:
-            :py:meth:`_create_user_list_object`. 
+            :py:meth:`_create_user_list_object`.
             None is returned if the database has no users.
 
         '''
@@ -108,7 +109,7 @@ class UserRepo(object):
         for row in rows:
             users.append(self._create_user_list_object(row))
         return users
-        
+
 
     def delete_user(self, user_id):
         '''
@@ -148,10 +149,10 @@ class UserRepo(object):
 
                     {'password':'',firstname':'','lastname':'',
                     'email':'', 'age':'','gender':'','website':''}
-                              
+
                 where:
-                
-                * ``password``: new passowrd of the user (string). 
+
+                * ``password``: new passowrd of the user (string).
                 * ``firstanme``: new given name of the user (string).
                 * ``lastname``: new family name of the user (string).
                 * ``email``: new email of the user (string).
@@ -279,7 +280,7 @@ class UserRepo(object):
             return nickname
         else:
             return None
-        
+
     def get_user_id(self, nickname):
         '''
         Get the user_id of the user with the given
@@ -291,8 +292,6 @@ class UserRepo(object):
 
         '''
         query = constants.SQL_SELECT_USER_BY_NICKNAME
-        #Activate foreign key support
-        self.set_foreign_keys_support()
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
@@ -368,7 +367,7 @@ class UserRepo(object):
 
         :param row: The row obtained from the database.
         :type row: sqlite3.Row
-        :return: a dictionary with the follwing format: 
+        :return: a dictionary with the follwing format:
              .. code-block:: javascript
 
                 {'registration_date':'','nickname':'','rating':'',website:''}
@@ -382,8 +381,6 @@ class UserRepo(object):
                 * ``website``: user's personal web URL (string).
 
         '''
-        user_list_object = {'registration_date': row['registration_date'], 'nickname': row['nickname'], 
+        user_list_object = {'registration_date': row['registration_date'], 'nickname': row['nickname'],
                             'rating': row['rating'], 'website': row['webiste']}
         return user_list_object
-
-

@@ -31,7 +31,6 @@ class Connection(object):
 
     def __init__(self, db_path):
         super(Connection, self).__init__()
-        print("Inside connection constructor")
         self.con = sqlite3.connect(db_path)
         self._isclosed = False
         self.user_repo = UserRepo(self.con)
@@ -112,7 +111,7 @@ class Connection(object):
     # this methods represent the db api. A description should be provided and the
     # execution should be delegated to a separate class which deals with user
     # db management (can be an inner class)
-    
+
     def get_user(self, user_id):
         '''
         Extracts all the information of a user.
@@ -143,7 +142,7 @@ class Connection(object):
 
         :return: list of Users of the database. Each user is a dictionary
             with the format provided in the method:
-            :py:meth:`_create_user_list_object`. 
+            :py:meth:`_create_user_list_object`.
             None is returned if the database has no users.
         '''
         self.set_foreign_keys_support()
@@ -173,10 +172,10 @@ class Connection(object):
 
                     {'password':'',firstname':'','lastname':'',
                     'email':'', 'age':'','gender':'','website':''}
-                              
+
                 where:
-                
-                * ``password``: new passowrd of the user (string). 
+
+                * ``password``: new passowrd of the user (string).
                 * ``firstanme``: new given name of the user (string).
                 * ``lastname``: new family name of the user (string).
                 * ``email``: new email of the user (string).

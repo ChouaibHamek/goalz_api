@@ -25,10 +25,10 @@ The user has a dictionary data represented contains:
 The user data dictionary to modify user contains:
     {'password':'',firstname':'','lastname':'',
     'email':'', 'age':'','gender':'','website':''}
-                                
+
     where:
-                
-        * ``password``: new passowrd of the user (string). 
+
+        * ``password``: new passowrd of the user (string).
         * ``firstanme``: new given name of the user (string).
         * ``lastname``: new family name of the user (string).
         * ``email``: new email of the user (string).
@@ -68,11 +68,11 @@ USER1 = {'public_profile': {'registration_date': 1362015937,
 MODIFIED_USER1 = {'password':'Y6C5G49BD4DF062CD92419T7EA63806V',
                  'firstname':'Cho',
                  'lastname':'Hamek',
-                  'email':'ch@h.com', 
+                  'email':'ch@h.com',
                   'age':'25',
                   'gender':'M',
                   'website':'https://github.com/ChouaibHamek'}
-                 
+
 USER2_NICKNAME = 'Daniel'
 USER2_ID = 2
 USER2 = {'public_profile': {'registration_date': 1357724086,
@@ -89,7 +89,7 @@ USER2 = {'public_profile': {'registration_date': 1357724086,
 NEW_USER_NICKNAME = 'Nathan'
 NEW_USER = {'firstname':'Nathan',
             'lastname':'East',
-            'email':'ne@101e.com', 
+            'email':'ne@101e.com',
             'password':'E6C5F49BD4DF062BC92419C7EA63806B',
             'age':'50',
             'gender':'M',
@@ -136,10 +136,8 @@ class UserDBAPITestCase(unittest.TestCase):
         '''
         try:
             ENGINE.populate_tables()
-            print("testBefore")
             self.connection = ENGINE.connect()
         except Exception as e:
-            print("Exception:", e)
             ENGINE.clear()
 
     def tearDown(self):
@@ -151,14 +149,14 @@ class UserDBAPITestCase(unittest.TestCase):
 
     def test_users_table_created(self):
         '''
-        Checks that the table initially contains 6 users 
+        Checks that the table initially contains 6 users
         '''
         print('('+self.test_users_table_created.__name__+')', \
               self.test_users_table_created.__doc__)
         #Create the SQL Statement
         keys_on = 'PRAGMA foreign_keys = ON'
         query1 = 'SELECT * FROM users'
-        query2 = 'SELECT * FROM users_profile'
+        query2 = 'SELECT * FROM user_profile'
         #Connects to the database.
         con = self.connection.con
         with con:
@@ -172,220 +170,220 @@ class UserDBAPITestCase(unittest.TestCase):
             users = cur.fetchall()
             #Assert
             self.assertEqual(len(users), INITIAL_SIZE)
-            #Check the users_profile:
+            #Check the user_profile:
             cur.execute(query2)
             users = cur.fetchall()
             #Assert
             self.assertEqual(len(users), INITIAL_SIZE)
 
-    # def test_create_user_object(self):
-    #     '''
-    #     Check that the method create_user_object works return adequate values
-    #     for the first database row. 
-    #     '''
-    #     print('('+self.test_create_user_object.__name__+')', \
-    #           self.test_create_user_object.__doc__)
-    #     #Create the SQL Statement
-    #     keys_on = 'PRAGMA foreign_keys = ON'
-    #     query = 'SELECT users.*, users_profile.* FROM users, users_profile \
-    #              WHERE users.user_id = ? \
-    #              AND users_profile.user_id = users.user_id'
-    #     #Get the sqlite3 con from the Connection instance
-    #     con = self.connection.con
-    #     with con:
-    #         #Cursor and row initialization
-    #         con.row_factory = sqlite3.Row
-    #         cur = con.cursor()
-    #         #Provide support for foreign keys
-    #         cur.execute(keys_on)
-    #         #Execute main SQL Statement
-    #         pvalue = (USER1_ID, )
-    #         cur.execute(query, pvalue)
-    #         #Extrac the row
-    #         row = cur.fetchone()   
-    #     user = self.connection.user_repo._create_user_object(row)
-    #     self.assertDictContainsSubset(user, USER1)
+    def test_create_user_object(self):
+        '''
+        Check that the method create_user_object works return adequate values
+        for the first database row.
+        '''
+        print('('+self.test_create_user_object.__name__+')', \
+              self.test_create_user_object.__doc__)
+        #Create the SQL Statement
+        keys_on = 'PRAGMA foreign_keys = ON'
+        query = 'SELECT users.*, user_profile.* FROM users, user_profile \
+                 WHERE users.user_id = ? \
+                 AND user_profile.user_id = users.user_id'
+        #Get the sqlite3 con from the Connection instance
+        con = self.connection.con
+        with con:
+            #Cursor and row initialization
+            con.row_factory = sqlite3.Row
+            cur = con.cursor()
+            #Provide support for foreign keys
+            cur.execute(keys_on)
+            #Execute main SQL Statement
+            pvalue = (USER1_ID, )
+            cur.execute(query, pvalue)
+            #Extrac the row
+            row = cur.fetchone()
+        user = self.connection.user_repo._create_user_object(row)
+        self.assertDictContainsSubset(user, USER1)
 
-    # def test_get_user_by_id(self):
-    #     '''
-    #     Test get_user with id of Chouaib and Daniel
-    #     '''
-    #     print('('+self.test_get_user_by_id.__name__+')', \
-    #           self.test_get_user_by_id.__doc__)
+    def test_get_user_by_id(self):
+        '''
+        Test get_user with id of Chouaib and Daniel
+        '''
+        print('('+self.test_get_user_by_id.__name__+')', \
+              self.test_get_user_by_id.__doc__)
 
-    #     #Test with an existing user
-    #     user = self.connection.get_user(USER1_ID)
-    #     self.assertDictContainsSubset(user, USER1)
-    #     user = self.connection.get_user(USER2_ID)
-    #     self.assertDictContainsSubset(user, USER2)
+        #Test with an existing user
+        user = self.connection.get_user(USER1_ID)
+        self.assertDictContainsSubset(user, USER1)
+        user = self.connection.get_user(USER2_ID)
+        self.assertDictContainsSubset(user, USER2)
 
-    # def test_get_user_by_nickname(self):
-    #     '''
-    #     Test get_user with nickname Chouaib and Daniel
-    #     '''
-    #     print('('+self.test_get_user_by_nickname.__name__+')', \
-    #           self.test_get_user_by_nickname.__doc__)
+    def test_get_user_by_nickname(self):
+        '''
+        Test get_user with nickname Chouaib and Daniel
+        '''
+        print('('+self.test_get_user_by_nickname.__name__+')', \
+              self.test_get_user_by_nickname.__doc__)
 
-    #     #Test with an existing user
-    #     user = self.connection.get_user_public(USER1_NICKNAME)
-    #     self.assertDictContainsSubset(user, USER1['public_profile'])
-    #     user = self.connection.get_user_public(USER2_NICKNAME)
-    #     self.assertDictContainsSubset(user, USER2['public_profile'])
+        #Test with an existing user
+        user = self.connection.get_user_public(USER1_NICKNAME)
+        self.assertDictContainsSubset(user, USER1['public_profile'])
+        user = self.connection.get_user_public(USER2_NICKNAME)
+        self.assertDictContainsSubset(user, USER2['public_profile'])
 
-    # def test_get_user_noexistingid(self):
-    #     '''
-    #     Test get_user with non existing ID
-    #     '''
-    #     print('('+self.test_get_user_noexistingid.__name__+')', \
-    #           self.test_get_user_noexistingid.__doc__)
+    def test_get_user_noexistingid(self):
+        '''
+        Test get_user with non existing ID
+        '''
+        print('('+self.test_get_user_noexistingid.__name__+')', \
+              self.test_get_user_noexistingid.__doc__)
 
-    #     #Test with an no existing user
-    #     user = self.connection.get_user(USER_WRONG_ID)
-    #     self.assertIsNone(user)
+        #Test with an no existing user
+        user = self.connection.get_user(USER_WRONG_ID)
+        self.assertIsNone(user)
 
-    # def test_get_user_noexistingnickname(self):
-    #     '''
-    #     Test get_user with non existing nicnkname
-    #     '''
-    #     print('('+self.test_get_user_noexistingid.__name__+')', \
-    #           self.test_get_user_noexistingid.__doc__)
+    def test_get_user_noexistingnickname(self):
+        '''
+        Test get_user with non existing nicnkname
+        '''
+        print('('+self.test_get_user_noexistingid.__name__+')', \
+              self.test_get_user_noexistingid.__doc__)
 
-    #     #Test with an no existing user
-    #     user = self.connection.get_user_public(USER_WRONG_NICKNAME)
-    #     self.assertIsNone(user)
+        #Test with an no existing user
+        user = self.connection.get_user_public(USER_WRONG_NICKNAME)
+        self.assertIsNone(user)
 
-    # def test_get_users(self):
-    #     '''
-    #     Test that get_users work correctly and extract required user info
-    #     '''
-    #     print('('+self.test_get_users.__name__+')', \
-    #           self.test_get_users.__doc__)
-    #     users = self.connection.get_users()
-    #     #Check that the size is correct
-    #     self.assertEqual(len(users), INITIAL_SIZE)
-    #     #Iterate throug users and check if the users with USER1_ID and
-    #     #USER2_ID are correct:
-    #     for user in users:
-    #         if user['nickname'] == USER1_NICKNAME:
-    #             self.assertDictContainsSubset(user, USER1['public_profile'])
-    #         elif user['nickname'] == USER2_NICKNAME:
-    #             self.assertDictContainsSubset(user, USER2['public_profile'])
+    def test_get_users(self):
+        '''
+        Test that get_users work correctly and extract required user info
+        '''
+        print('('+self.test_get_users.__name__+')', \
+              self.test_get_users.__doc__)
+        users = self.connection.get_users()
+        #Check that the size is correct
+        self.assertEqual(len(users), INITIAL_SIZE)
+        #Iterate throug users and check if the users with USER1_ID and
+        #USER2_ID are correct:
+        for user in users:
+            if user['nickname'] == USER1_NICKNAME:
+                self.assertDictContainsSubset(user, USER1['public_profile'])
+            elif user['nickname'] == USER2_NICKNAME:
+                self.assertDictContainsSubset(user, USER2['public_profile'])
 
-    # def test_delete_user(self):
-    #     '''
-    #     Test that the user Chouaib is deleted
-    #     '''
-    #     print('('+self.test_delete_user.__name__+')', \
-    #           self.test_delete_user.__doc__)
-    #     resp = self.connection.delete_user(USER1_ID)
-    #     self.assertTrue(resp)
-    #     #Check that the users has been really deleted throug a get
-    #     resp2 = self.connection.get_user(USER1_ID)
-    #     self.assertIsNone(resp2)
+    def test_delete_user(self):
+        '''
+        Test that the user Chouaib is deleted
+        '''
+        print('('+self.test_delete_user.__name__+')', \
+              self.test_delete_user.__doc__)
+        resp = self.connection.delete_user(USER1_ID)
+        self.assertTrue(resp)
+        #Check that the users has been really deleted throug a get
+        resp2 = self.connection.get_user(USER1_ID)
+        self.assertIsNone(resp2)
 
-    # def test_delete_user_noexistingnickname(self):
-    #     '''
-    #     Test delete_user with  Angelia (no-existing)
-    #     '''
-    #     print('('+self.test_delete_user_noexistingnickname.__name__+')', \
-    #           self.test_delete_user_noexistingnickname.__doc__)
-    #     #Test with an existing user
-    #     resp = self.connection.delete_user(USER_WRONG_ID)
-    #     self.assertFalse(resp)
+    def test_delete_user_noexistingnickname(self):
+        '''
+        Test delete_user with  Angelia (no-existing)
+        '''
+        print('('+self.test_delete_user_noexistingnickname.__name__+')', \
+              self.test_delete_user_noexistingnickname.__doc__)
+        #Test with an existing user
+        resp = self.connection.delete_user(USER_WRONG_ID)
+        self.assertFalse(resp)
 
-    # def test_modify_user(self):
-    #     '''
-    #     Test that the user Mystery is modifed
-    #     '''
-    #     print('('+self.test_modify_user.__name__+')', \
-    #           self.test_modify_user.__doc__)
-    #     #Get the modified user
-    #     resp = self.connection.modify_user(USER1_ID , MODIFIED_USER1)
-    #     self.assertEqual(resp, USER1_NICKNAME)
-    #     #Check that the users has been really modified through a get
-    #     resp2 = self.connection.get_user(USER1_ID)
-    #     resp_p_profile = resp2['public_profile']
-    #     resp_r_profile = resp2['restricted_profile']
-    #     #Check the expected values
-    #     profile = MODIFIED_USER1
-    #     self.assertEqual(profile['website'],resp_p_profile['website'])
-    #     self.assertEqual(profile['password'], resp_r_profile['password'])
-    #     self.assertEqual(profile['firstname'], resp_r_profile['firstname'])
-    #     self.assertEqual(profile['lastname'], resp_r_profile['lastname'])
-    #     self.assertEqual(profile['email'], resp_r_profile['email'])
-    #     self.assertEqual(profile['age'], resp_r_profile['age'])
+    def test_modify_user(self):
+        '''
+        Test that the user Mystery is modifed
+        '''
+        print('('+self.test_modify_user.__name__+')', \
+              self.test_modify_user.__doc__)
+        #Get the modified user
+        resp = self.connection.modify_user(USER1_ID , MODIFIED_USER1)
+        self.assertEqual(resp, USER1_NICKNAME)
+        #Check that the users has been really modified through a get
+        resp2 = self.connection.get_user(USER1_ID)
+        resp_p_profile = resp2['public_profile']
+        resp_r_profile = resp2['restricted_profile']
+        #Check the expected values
+        profile = MODIFIED_USER1
+        self.assertEqual(profile['website'],resp_p_profile['website'])
+        self.assertEqual(profile['password'], resp_r_profile['password'])
+        self.assertEqual(profile['firstname'], resp_r_profile['firstname'])
+        self.assertEqual(profile['lastname'], resp_r_profile['lastname'])
+        self.assertEqual(profile['email'], resp_r_profile['email'])
+        self.assertEqual(profile['age'], resp_r_profile['age'])
 
-    # def test_modify_user_noexistingnickname(self):
-    #     '''
-    #     Test modify_user with  user Batty (no-existing)
-    #     '''
-    #     print('('+self.test_modify_user_noexistingnickname.__name__+')', \
-    #           self.test_modify_user_noexistingnickname.__doc__)
-    #     #Test with an existing user
-    #     resp = self.connection.modify_user(USER_WRONG_ID, MODIFIED_USER1)
-    #     self.assertIsNone(resp)
+    def test_modify_user_noexistingnickname(self):
+        '''
+        Test modify_user with  user Batty (no-existing)
+        '''
+        print('('+self.test_modify_user_noexistingnickname.__name__+')', \
+              self.test_modify_user_noexistingnickname.__doc__)
+        #Test with an existing user
+        resp = self.connection.modify_user(USER_WRONG_ID, MODIFIED_USER1)
+        self.assertIsNone(resp)
 
-    # def test_create_user(self):
-    #     '''
-    #     Test that I can add new users
-    #     '''
-    #     print('('+self.test_create_user.__name__+')', \
-    #           self.test_create_user.__doc__)
-    #     nickname = self.connection.create_user(NEW_USER_NICKNAME, NEW_USER)
-    #     self.assertIsNotNone(nickname)
-    #     self.assertEqual(nickname, NEW_USER_NICKNAME)
-    #     #Check that the messages has been really modified through a get
-    #     resp2 = self.connection.get_user(nickname)
-    #     self.assertDictContainsSubset(NEW_USER_GET['restricted_profile'],
-    #                                   resp2['restricted_profile'])
-    #     self.assertDictContainsSubset(NEW_USER_GET['public_profile'],
-    #                                   resp2['public_profile'])
+    def test_create_user(self):
+        '''
+        Test that I can add new users
+        '''
+        print('('+self.test_create_user.__name__+')', \
+              self.test_create_user.__doc__)
+        nickname = self.connection.create_user(NEW_USER_NICKNAME, NEW_USER)
+        self.assertIsNotNone(nickname)
+        self.assertEqual(nickname, NEW_USER_NICKNAME)
+        #Check that the messages has been really modified through a get
+        resp2 = self.connection.get_user(nickname)
+        self.assertDictContainsSubset(NEW_USER_GET['restricted_profile'],
+                                      resp2['restricted_profile'])
+        self.assertDictContainsSubset(NEW_USER_GET['public_profile'],
+                                      resp2['public_profile'])
 
-    # def test_create_existing_user(self):
-    #     '''
-    #     Test add a new user with an existing nickname
-    #     '''
-    #     print('('+self.test_create_existing_user.__name__+')', \
-    #           self.test_create_existing_user.__doc__)
-    #     nickname = self.connection.create_user(USER1_NICKNAME, NEW_USER)
-    #     self.assertIsNone(nickname)
+    def test_create_existing_user(self):
+        '''
+        Test add a new user with an existing nickname
+        '''
+        print('('+self.test_create_existing_user.__name__+')', \
+              self.test_create_existing_user.__doc__)
+        nickname = self.connection.create_user(USER1_NICKNAME, NEW_USER)
+        self.assertIsNone(nickname)
 
-    # def test_get_user_id(self):
-    #     '''
-    #     Test that get_user_id returns the right value given a nickname
-    #     '''
-    #     print('('+self.test_get_user_id.__name__+')', \
-    #           self.test_get_user_id.__doc__)
-    #     id = self.connection.get_user_id(USER1_NICKNAME)
-    #     self.assertEqual(USER1_ID, id)
-    #     id = self.connection.get_user_id(USER2_NICKNAME)
-    #     self.assertEqual(USER2_ID, id)
+    def test_get_user_id(self):
+        '''
+        Test that get_user_id returns the right value given a nickname
+        '''
+        print('('+self.test_get_user_id.__name__+')', \
+              self.test_get_user_id.__doc__)
+        id = self.connection.get_user_id(USER1_NICKNAME)
+        self.assertEqual(USER1_ID, id)
+        id = self.connection.get_user_id(USER2_NICKNAME)
+        self.assertEqual(USER2_ID, id)
 
-    # def test_get_user_id_unknown_user(self):
-    #     '''
-    #     Test that get_user_id returns None when the nickname does not exist
-    #     '''
-    #     print('('+self.test_get_user_id.__name__+')', \
-    #           self.test_get_user_id.__doc__)
-    #     id = self.connection.get_user_id(USER_WRONG_NICKNAME)
-    #     self.assertIsNone(id)
+    def test_get_user_id_unknown_user(self):
+        '''
+        Test that get_user_id returns None when the nickname does not exist
+        '''
+        print('('+self.test_get_user_id.__name__+')', \
+              self.test_get_user_id.__doc__)
+        id = self.connection.get_user_id(USER_WRONG_NICKNAME)
+        self.assertIsNone(id)
 
-    # def test_not_contains_user(self):
-    #     '''
-    #     Check if the database does not contain users with id Angelia
-    #     '''
-    #     print('('+self.test_contains_user.__name__+')', \
-    #           self.test_contains_user.__doc__)
-    #     self.assertFalse(self.connection.contains_user(USER_WRONG_NICKNAME))
+    def test_not_contains_user(self):
+        '''
+        Check if the database does not contain users with id Angelia
+        '''
+        print('('+self.test_contains_user.__name__+')', \
+              self.test_contains_user.__doc__)
+        self.assertFalse(self.connection.contains_user(USER_WRONG_NICKNAME))
 
-    # def test_contains_user(self):
-    #     '''
-    #     Check if the database contains users with nickname Chouaib and Daniel
-    #     '''
-    #     print('('+self.test_contains_user.__name__+')', \
-    #           self.test_contains_user.__doc__)
-    #     self.assertTrue(self.connection.contains_user(USER1_NICKNAME))
-    #     self.assertTrue(self.connection.contains_user(USER2_NICKNAME))
+    def test_contains_user(self):
+        '''
+        Check if the database contains users with nickname Chouaib and Daniel
+        '''
+        print('('+self.test_contains_user.__name__+')', \
+              self.test_contains_user.__doc__)
+        self.assertTrue(self.connection.contains_user(USER1_NICKNAME))
+        self.assertTrue(self.connection.contains_user(USER2_NICKNAME))
 
 if __name__ == '__main__':
     print('Start running user tests')
