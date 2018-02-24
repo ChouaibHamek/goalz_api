@@ -1,3 +1,9 @@
+/*
+  This file contain the db schema
+
+  If this file is modified make sure the changes are propagated also
+  to "db/goalz_data_dump.sql" and "src/db/constants.py"
+ */
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS users(
@@ -17,7 +23,7 @@ CREATE TABLE IF NOT EXISTS user_profile(
   gender TEXT,
   FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
 CREATE TABLE IF NOT EXISTS goals(
-  goal_id INTEGER,
+  goal_id INTEGER PRIMARY KEY,
   parent_id INTEGER,
   user_id INTEGER,
   title TEXT,
