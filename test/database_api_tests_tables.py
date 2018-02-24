@@ -11,7 +11,7 @@ import sqlite3, unittest
 from src.db import engine, connection, constants
 
 #Path to the database file, different from the deployment db
-DB_PATH = 'db/goalz.db'
+DB_PATH = 'db/goalz_test.db'
 ENGINE = engine.Engine(DB_PATH)
 
 INITIAL_USERS_SIZE = 6
