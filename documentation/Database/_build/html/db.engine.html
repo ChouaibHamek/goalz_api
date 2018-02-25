@@ -1,0 +1,267 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>db.engine module &#8212; Goalz API 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="db.goal_repo module" href="db.goal_repo.html" />
+    <link rel="prev" title="db.connection module" href="db.connection.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="db.goal_repo.html" title="db.goal_repo module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="db.connection.html" title="db.connection module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Goalz API 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="db.html" accesskey="U">db package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="db-engine-module">
+<h1>db.engine module<a class="headerlink" href="#db-engine-module" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.db.engine.Engine">
+<em class="property">class </em><code class="descclassname">src.db.engine.</code><code class="descname">Engine</code><span class="sig-paren">(</span><em>db_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstraction of the database.</p>
+<p>It includes tools to create, configure, populate and connect to the sqlite file.
+It provides access to a Connection instance, and hence, to the database interface
+itself using the method <code class="xref py py-meth docutils literal notranslate"><span class="pre">connection()</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">con</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>db_path</strong> (<em>str</em>) – The path of the database file (always with respect to the calling
+script. If not specified, the Engine will use the file located at <em>db/src.db</em></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="src.db.engine.Engine.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all records from the database tables. Keeps the database
+schema (meaning the table structure)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.engine.Engine.connect">
+<code class="descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a connection to the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A Connection instance</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="db.connection.html#src.db.connection.Connection" title="src.db.connection.Connection">Connection</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.engine.Engine.create_goals_table">
+<code class="descname">create_goals_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine.create_goals_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the table <code class="docutils literal notranslate"><span class="pre">goals</span></code> programmatically, without using .sql file.</p>
+<p>Print an error message in the console if it could not be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if the table was successfully created or <a href="#id1"><span class="problematic" id="id2">``</span></a>False``otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.engine.Engine.create_resources_table">
+<code class="descname">create_resources_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine.create_resources_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the table <code class="docutils literal notranslate"><span class="pre">resources</span></code> programmatically, without using .sql file.</p>
+<p>Print an error message in the console if it could not be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if the table was successfully created or <a href="#id3"><span class="problematic" id="id4">``</span></a>False``otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.engine.Engine.create_tables">
+<code class="descname">create_tables</code><span class="sig-paren">(</span><em>schema=None</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine.create_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create programmatically the tables from a schema file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>schema</strong> – path to the .sql schema file. If this parameter is None, then
+<em>db/forum_schema_dump.sql</em> is used.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.engine.Engine.create_user_profile_table">
+<code class="descname">create_user_profile_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine.create_user_profile_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the table <code class="docutils literal notranslate"><span class="pre">user_profile</span></code> programmatically, without using .sql file.</p>
+<p>Print an error message in the console if it could not be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if the table was successfully created or <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.engine.Engine.create_users_table">
+<code class="descname">create_users_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine.create_users_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the table <code class="docutils literal notranslate"><span class="pre">users</span></code> programmatically, without using .sql file.</p>
+<p>Print an error message in the console if it could not be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if the table was successfully created or <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.engine.Engine.execute_statement">
+<code class="descname">execute_statement</code><span class="sig-paren">(</span><em>statement</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine.execute_statement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute an SQL statement with foreign key support on</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if the statement was successful <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.engine.Engine.populate_tables">
+<code class="descname">populate_tables</code><span class="sig-paren">(</span><em>dump=None</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine.populate_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate programmatically the tables from a dump file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dump</strong> – path to the .sql dump file. If this parameter is None, then
+<em>db/forum_data_dump.sql</em> is used.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.engine.Engine.remove_database">
+<code class="descname">remove_database</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.engine.Engine.remove_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the database file from the filesystem.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="db.connection.html"
+                        title="previous chapter">db.connection module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="db.goal_repo.html"
+                        title="next chapter">db.goal_repo module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/db.engine.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="db.goal_repo.html" title="db.goal_repo module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="db.connection.html" title="db.connection module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Goalz API 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="db.html" >db package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Aleksandar Zivkovic, Alfitra Rahman, Chouaib Hamek, Daniel Toniuc.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.1.
+    </div>
+  </body>
+</html>
