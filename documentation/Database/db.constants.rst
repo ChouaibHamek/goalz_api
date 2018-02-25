@@ -1,7 +1,7 @@
 db.constants module
 ===================
 
-.. autoclass:: src.db.constants.Contants
+.. autoclass:: src.db.Constants
     :members:
     :undoc-members:
     :show-inheritance:

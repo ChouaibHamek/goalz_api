@@ -42,6 +42,157 @@
             
   <div class="section" id="db-goal-repo-module">
 <h1>db.goal_repo module<a class="headerlink" href="#db-goal-repo-module" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.db.goal_repo.GoalRepo">
+<em class="property">class </em><code class="descclassname">src.db.goal_repo.</code><code class="descname">GoalRepo</code><span class="sig-paren">(</span><em>con</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.goal_repo.GoalRepo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Methods to manipulate “goal” table in the Goalz database</p>
+<p>The sqlite3 connection instance is received as a constructor parameter and
+is accessible to all the methods of this class through the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">self.con</span></code> attribute.</p>
+<p>Methods of this class <strong>MUST</strong> not be accessed directly. All the calls to
+the database should be made through the API provided by <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>con</strong> (<em>sqlite3.Connection</em>) – Connection to an SqlLite database</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="src.db.goal_repo.GoalRepo.create_goal">
+<code class="descname">create_goal</code><span class="sig-paren">(</span><em>user_id</em>, <em>parent_id</em>, <em>title</em>, <em>topic</em>, <em>description</em>, <em>deadline</em>, <em>status</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.goal_repo.GoalRepo.create_goal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new goal with the data provided as arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_id</strong> (<em>int</em>) – the id of the user that created the goal</li>
+<li><strong>parent_id</strong> (<em>int</em>) – the goal’s parent_id</li>
+<li><strong>title</strong> (<em>str</em>) – the goal’s title</li>
+<li><strong>topic</strong> (<em>str</em>) – the goal’s topic</li>
+<li><strong>description</strong> (<em>str</em>) – the goal’s description</li>
+<li><strong>deadline</strong> (<em>int</em>) – the goal’s deadline</li>
+<li><strong>status</strong> (<em>int</em>) – the goal’s status</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the id of the created goal or None if user or parent goals
+were not found.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.goal_repo.GoalRepo.delete_goal">
+<code class="descname">delete_goal</code><span class="sig-paren">(</span><em>goal_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.goal_repo.GoalRepo.delete_goal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the goal with id given as parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>goal_id</strong> (<em>int</em>) – id of the goal to remove.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the goal has been deleted, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.goal_repo.GoalRepo.get_goal">
+<code class="descname">get_goal</code><span class="sig-paren">(</span><em>goal_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.goal_repo.GoalRepo.get_goal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a goal from the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>goal_id</strong> – The id of the goal (int)``.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary with the format provided in
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_create_goal_object()</span></code> or None if the goal with target
+id does not exist.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.goal_repo.GoalRepo.get_goals">
+<code class="descname">get_goals</code><span class="sig-paren">(</span><em>user_id</em>, <em>number_of_goals</em>, <em>before</em>, <em>after</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.goal_repo.GoalRepo.get_goals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all the goals in the database filtered by the
+conditions provided in the parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_id</strong> (<em>int</em>) – Search goals of a user with the given user_id.
+If this parameter is None, it returns the goals of any user in
+the system.</li>
+<li><strong>number_of_goals</strong> (<em>int</em>) – Sets the maximum number of
+goals returning in the list. If set to None, there is no limit.</li>
+<li><strong>before</strong> (<em>long</em>) – All deadlines &gt; <code class="docutils literal notranslate"><span class="pre">before</span></code> (UNIX timestamp) are removed.
+If set to None, this condition is not applied.</li>
+<li><strong>after</strong> (<em>long</em>) – All deadlines &lt; <code class="docutils literal notranslate"><span class="pre">after</span></code> (UNIX timestamp) are removed.
+If set to None, this condition is not applied.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>A list of goals. Each goal is a dictionary containing
+the following keys:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">goal_id</span></code>: integer representing the Id of the goal..</li>
+<li><code class="docutils literal notranslate"><span class="pre">title</span></code>: string containing the title of the goal.</li>
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code>: string containing the description of goal.</li>
+</ul>
+<p>Note that all values in the returned dictionary are string unless
+otherwise stated.</p>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValueError</strong> – if <code class="docutils literal notranslate"><span class="pre">before</span></code> or <code class="docutils literal notranslate"><span class="pre">after</span></code> are not valid UNIX
+timestamps</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.goal_repo.GoalRepo.modify_goal">
+<code class="descname">modify_goal</code><span class="sig-paren">(</span><em>goal_id</em>, <em>title</em>, <em>topic</em>, <em>description</em>, <em>deadline</em>, <em>status</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.goal_repo.GoalRepo.modify_goal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the title, the topic, the description, the status, and the
+deadline of the goal with id <code class="docutils literal notranslate"><span class="pre">goal_id</span></code>. An individual field can be
+modified by setting the rest as None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>goal_id</strong> (<em>int</em>) – The id of the goal to remove.</li>
+<li><strong>title</strong> (<em>str</em>) – the goal’s title</li>
+<li><strong>topic</strong> (<em>str</em>) – the goal’s topic</li>
+<li><strong>description</strong> (<em>str</em>) – the goal’s description</li>
+<li><strong>deadline</strong> (<em>int</em>) – the goal’s deadline</li>
+<li><strong>status</strong> (<em>int</em>) – the goal’s status</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the id of the edited goal or None if the goal was
+not found.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
