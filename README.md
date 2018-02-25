@@ -49,11 +49,15 @@ Database tests
 -------------
 
 To test only some parts of the database api the following test files are provided:
-*"database_api_tests_tables.py" - test methods that manage database tables and database connection
-*"database_api_tests_user.py" - tests all methods which manipulate users' data
-*"database_api_tests_goal.py" - tests all methods which manipulate goals' data
-*"database_api_tests_resources.py" - tests all methods which manipulate resources' data
+* database_api_tests_tables.py - test methods that manage database tables and database connection
+* database_api_tests_user.py - tests all methods which manipulate users' data
+* database_api_tests_goal.py - tests all methods which manipulate goals' data
+* database_api_tests_resources.py - tests all methods which manipulate resources' data
 
 In order to run any of these tests one has to execute, from the main folder, the following command:
-	python -m test.<test_file>
+
+```
+python -m test.<test_file>
+```
+	
 in which the placeholder is replaced with the name of the file without the '.py' extension
