@@ -15,7 +15,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="db.constants module" href="db.constants.html" />
+    <link rel="next" title="db.engine module" href="db.engine.html" />
     <link rel="prev" title="db package" href="db.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -25,7 +25,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="db.constants.html" title="db.constants module"
+          <a href="db.engine.html" title="db.engine module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="db.html" title="db package"
@@ -120,11 +120,14 @@ connection is closed.</td>
 <dl class="method">
 <dt id="src.db.connection.Connection.contains_user">
 <code class="descname">contains_user</code><span class="sig-paren">(</span><em>nickname</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.contains_user" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Check whether the nickname is exist in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the user is in the database. False otherwise</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nickname</strong> (<em>str</em>) – The nickname of the user</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the user is in the database. False otherwise</td>
 </tr>
 </tbody>
 </table>
@@ -639,8 +642,8 @@ to be modified. The dictionary has the following structure:</p>
   <p class="topless"><a href="db.html"
                         title="previous chapter">db package</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="db.constants.html"
-                        title="next chapter">db.constants module</a></p>
+  <p class="topless"><a href="db.engine.html"
+                        title="next chapter">db.engine module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -671,7 +674,7 @@ to be modified. The dictionary has the following structure:</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="db.constants.html" title="db.constants module"
+          <a href="db.engine.html" title="db.engine module"
              >next</a> |</li>
         <li class="right" >
           <a href="db.html" title="db package"

@@ -32,9 +32,9 @@ class UserRepo(object):
         '''
         Extracts public information of a user by the user_id or nickname
         
-        :param integer user_id: The unique ID of the user, default None.
-        :param string nickname: The nickname of the user to search for, default None.
-        :return: dictionary with the format provided in the method:
+        :param int user_id: The unique ID of the user, default None.
+        :param str nickname: The nickname of the user to search for, default None.
+        :return: Dictionary with the format provided in the method:
             :py:meth:`_create_user_list_object`. None is returned if the database
             has no users with given nickname.
 
@@ -76,9 +76,9 @@ class UserRepo(object):
         '''
         Extracts all the information of a user by user_id or nickname.
 
-        :param integer user_id: The unique id of the user to search for, default None.
-        :param string nickname: The nickname of the user to search for, default None.
-        :return: dictionary with the format provided in the method:
+        :param int user_id: The unique id of the user to search for, default None.
+        :param str nickname: The nickname of the user to search for, default None.
+        :return: Dictionary with the format provided in the method:
             :py:meth:`_create_user_object`. None is returned if the database
             has no users with given user_id.
 
@@ -119,7 +119,7 @@ class UserRepo(object):
         '''
         Extracts all users in the database.
 
-        :return: list of Users of the database. Each user is a dictionary
+        :return: List of Users of the database. Each user is a dictionary
             with the format provided in the method:
             :py:meth:`_create_user_list_object`.
             None is returned if the database has no users.
@@ -149,7 +149,7 @@ class UserRepo(object):
         Remove all information of the user with the user_id passed in as
         argument.
 
-        :param integer user_id: The unique ID of the user to remove.
+        :param int user_id: The unique ID of the user to remove.
         :return: True if the user is deleted, False otherwise.
 
         '''
@@ -193,7 +193,7 @@ class UserRepo(object):
                 * ``gender``: new gender information of the user (string).
                 * ``website``: new user's personal web URL (string).
 
-        :return: the user_id of the modified user or None if the
+        :return: The user_id of the modified user or None if the
             ``user_id`` passed is not in the database.
 
         '''
@@ -264,7 +264,7 @@ class UserRepo(object):
                 * ``gender``: user's gender. Can be None (string).
                 * ``webiste``: user's personal web URL. Can be None (string).
 
-        :return: the nickname of the modified user or None if the
+        :return: The nickname of the modified user or None if the
             ``nickname`` passed as parameter is already in the database.
 
         '''
@@ -320,7 +320,7 @@ class UserRepo(object):
         nickname.
 
         :param str nickname: The nickname of the user to search.
-        :return: the database attribute user_id or None if ``nickname`` does
+        :return: The database attribute user_id or None if ``nickname`` does
             not exist in the database.
 
         '''
@@ -342,6 +342,9 @@ class UserRepo(object):
 
     def contains_user(self, nickname):
         '''
+        Check whether the nickname is exist in the database.
+        
+        :param str nickname: The nickname of the user
         :return: True if the user is in the database. False otherwise
         '''
         return self.get_user_id(nickname) is not None
@@ -353,7 +356,7 @@ class UserRepo(object):
 
         :param row: The row obtained from the database.
         :type row: sqlite3.Row
-        :return: a dictionary with the following format:
+        :return: A dictionary with the following format:
 
             .. code-block:: javascript
 
@@ -400,7 +403,7 @@ class UserRepo(object):
 
         :param row: The row obtained from the database.
         :type row: sqlite3.Row
-        :return: a dictionary with the follwing format:
+        :return: A dictionary with the follwing format:
              .. code-block:: javascript
 
                 {'registration_date':'','nickname':'','rating':'',website:''}
