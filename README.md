@@ -60,4 +60,4 @@ In order to run any of these tests one has to execute, from the main folder, the
 python -m test.<test_file>
 ```
 	
-in which the placeholder is replaced with the name of the file without the '.py' extension
+where the placeholder <test_file> is replaced with the name of the file without the '.py' extension
