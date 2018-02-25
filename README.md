@@ -14,10 +14,10 @@ Setup
 Dependencies
 ------------
 The project contains the following dependencies:
-* [python3](https://docs.python.org/3/) interpreter - required to run the system (no standalone executables are provided)
+* [python3](https://docs.python.org/3/) interpreter - required to run the system (no stand-alone executables are provided)
 * [unittest](https://docs.python.org/3/library/unittest.html) library - Unit testing framework for python3 
 * [sqlite3](https://docs.python.org/3.6/library/sqlite3.html) library - DB-API 2.0 interface for SQLite databases
-* [SQlite](https://www.sqlite.org/index.html) engine - standalone sqlite distribution used for manual tests (provided with the project)
+* [SQlite](https://www.sqlite.org/index.html) engine - stand-alone sqlite distribution used for manual tests (provided with the project)
 	
 Configuration
 -------------
