@@ -1,0 +1,691 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>db.connection module &#8212; Goalz API 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="db.engine module" href="db.engine.html" />
+    <link rel="prev" title="db package" href="db.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="db.engine.html" title="db.engine module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="db.html" title="db package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Goalz API 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="db.html" accesskey="U">db package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="db-connection-module">
+<h1>db.connection module<a class="headerlink" href="#db-connection-module" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.db.connection.Connection">
+<em class="property">class </em><code class="descclassname">src.db.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>db_path</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>API to access the Goalz database.</p>
+<p>The sqlite3 connection instance is accessible to all the methods of this
+class through the <code class="xref py py-attr docutils literal notranslate"><span class="pre">self.con</span></code> attribute.</p>
+<p>An instance of this class should not be instantiated directly using the
+constructor. Instead use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Engine.connect()</span></code>.</p>
+<p>Use the method <a class="reference internal" href="#src.db.connection.Connection.close" title="src.db.connection.Connection.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> in order to close a connection.
+A <a class="reference internal" href="#src.db.connection.Connection" title="src.db.connection.Connection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code></a> <strong>MUST</strong> always be closed once when it is not going to be
+utilized anymore in order to release internal locks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>db_path</strong> (<em>str</em>) – Location of the database file.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="src.db.connection.Connection.check_foreign_keys_status">
+<code class="descname">check_foreign_keys_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.check_foreign_keys_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the foreign keys has been activated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if  foreign_keys is activated and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><strong>sqlite3.Error</strong> – when a sqlite3 error happen. In this case the
+connection is closed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the database connection, committing all changes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.contains_goal">
+<code class="descname">contains_goal</code><span class="sig-paren">(</span><em>goal_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.contains_goal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a goal is in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>goal_id</strong> (<em>int</em>) – Id of the goal to search.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the goal is in the database. False otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.contains_resource">
+<code class="descname">contains_resource</code><span class="sig-paren">(</span><em>resource_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.contains_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a resource is in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_id</strong> (<em>str</em>) – Id of the resource to search.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the resource is in the database. False otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.contains_user">
+<code class="descname">contains_user</code><span class="sig-paren">(</span><em>nickname</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.contains_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the nickname is exist in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nickname</strong> (<em>str</em>) – The nickname of the user</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the user is in the database. False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.create_goal">
+<code class="descname">create_goal</code><span class="sig-paren">(</span><em>user_id</em>, <em>title</em>, <em>topic</em>, <em>description</em>, <em>parent_id=None</em>, <em>deadline=None</em>, <em>status=0</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.create_goal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new goal with the data provided as arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_id</strong> (<em>int</em>) – the id of the user that created the goal</li>
+<li><strong>parent_id</strong> (<em>int</em>) – default to None. The goal’s parent_id</li>
+<li><strong>title</strong> (<em>str</em>) – the goal’s title</li>
+<li><strong>topic</strong> (<em>str</em>) – the goal’s topic</li>
+<li><strong>description</strong> (<em>str</em>) – the goal’s description.</li>
+<li><strong>deadline</strong> (<em>int</em>) – default to None. The goal’s deadline.</li>
+<li><strong>status</strong> (<em>int</em>) – default to 0. The goal’s status.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the id of the created goal or None if the goal was
+not found.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.create_resource">
+<code class="descname">create_resource</code><span class="sig-paren">(</span><em>goal_id</em>, <em>user_id</em>, <em>title</em>, <em>link</em>, <em>topic</em>, <em>description=None</em>, <em>required_time=None</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.create_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new resource with the data provided as arguments.</p>
+<p>In order to maintain a clear separation of responsibilities this method
+delegates the execution to the corresponding method from
+:py:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>ResourceRepo’ and returns the result</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>goal_id</strong> (<em>int</em>) – Id of the goal for which the resource was posted</li>
+<li><strong>user_id</strong> (<em>int</em>) – Id of the user who posted the resource</li>
+<li><strong>title</strong> (<em>str</em>) – The title of the resource</li>
+<li><strong>link</strong> (<em>str</em>) – The resource’s web URL</li>
+<li><strong>topic</strong> (<em>str</em>) – The topic of the resource provided as text</li>
+<li><strong>description</strong> (<em>str</em>) – Default = None. The description of the request</li>
+<li><strong>description</strong> – Default = None. Estimate of the number of minutes required
+to assimilate the resource</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the id of the created message or None. None is returned if
+the resource was not found, or the specified goal does not
+exists in the database, or the specified user does not
+exist in the database</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.create_user">
+<code class="descname">create_user</code><span class="sig-paren">(</span><em>nickname</em>, <em>new_user</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.create_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new user in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nickname</strong> (<em>str</em>) – The nickname of the user to modify</li>
+<li><strong>user</strong> (<em>dict</em>) – <p>a dictionary with the new user information. The
+dictionary has the following structure:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>{&#39;firstname&#39;:&#39;&#39;,&#39;lastname&#39;:&#39;&#39;,
+ &#39;email&#39;:&#39;&#39;, &#39;password:&#39;&#39;,&#39;age&#39;:&#39;&#39;,&#39;gender&#39;:&#39;&#39;,
+ &#39;website&#39;:&#39;&#39;}
+</pre></div>
+</div>
+<p>where:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">firstname</span></code>: given name of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">lastname</span></code>: family name of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">email</span></code>: email of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">password</span></code>: given password of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">age</span></code>: user’s age (integer).</li>
+<li><code class="docutils literal notranslate"><span class="pre">gender</span></code>: user’s gender. Can be None (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">webiste</span></code>: user’s personal web URL. Can be None (string).</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the nickname of the modified user or None if the
+<code class="docutils literal notranslate"><span class="pre">nickname</span></code> passed as parameter is already in the database.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.delete_goal">
+<code class="descname">delete_goal</code><span class="sig-paren">(</span><em>goal_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.delete_goal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the goal with id given as parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>goal_id</strong> (<em>int</em>) – id of the goal to remove.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the goal has been deleted, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.delete_resource">
+<code class="descname">delete_resource</code><span class="sig-paren">(</span><em>resource_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.delete_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the resource with id given as parameter.</p>
+<p>In order to maintain a clear separation of responsibilities this method
+delegates the execution to the corresponding method from
+:py:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>ResourceRepo’ and returns the result</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_id</strong> (<em>int</em>) – Id of the resource to remove.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the resource has been deleted, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.delete_user">
+<code class="descname">delete_user</code><span class="sig-paren">(</span><em>user_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.delete_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all information of the user with the user_id passed in as
+argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user_id</strong> (<em>integer</em>) – The unique ID of the user to remove.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the user is deleted, False otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.get_goal">
+<code class="descname">get_goal</code><span class="sig-paren">(</span><em>goal_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.get_goal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a goal from the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>goal_id</strong> – The id of the goal (int)``.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary with the format provided in
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_create_goal_object()</span></code> or None if the goal with target
+id does not exist.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.get_goals">
+<code class="descname">get_goals</code><span class="sig-paren">(</span><em>user_id=None</em>, <em>number_of_goals=None</em>, <em>before=None</em>, <em>after=None</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.get_goals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all the goals in the database filtered by the
+conditions provided in the parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_id</strong> (<em>int</em>) – Default None. Search goals of a user with the given
+user_id. If this parameter is None, it returns the goals of any user
+in the system.</li>
+<li><strong>number_of_goals</strong> (<em>int</em>) – Default None. Sets the maximum number of
+goals returning in the list. If set to None, there is no limit.</li>
+<li><strong>before</strong> (<em>long</em>) – Default None. All deadlines &gt; <code class="docutils literal notranslate"><span class="pre">before</span></code> (UNIX timestamp)
+are removed. If set to None, this condition is not applied.</li>
+<li><strong>after</strong> (<em>long</em>) – Default None. All deadlines &lt; <code class="docutils literal notranslate"><span class="pre">after</span></code> (UNIX timestamp)
+are removed. If set to None, this condition is not applied.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>A list of goals. Each goal is a dictionary containing
+the following keys:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">goal_id</span></code>: integer representing the Id of the goal.</li>
+<li><code class="docutils literal notranslate"><span class="pre">title</span></code>: string containing the title of the goal.</li>
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code>: string containing the description of goal.</li>
+</ul>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValueError</strong> – if <code class="docutils literal notranslate"><span class="pre">before</span></code> or <code class="docutils literal notranslate"><span class="pre">after</span></code> are not valid UNIX
+timestamps</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.get_resource">
+<code class="descname">get_resource</code><span class="sig-paren">(</span><em>resource_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.get_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a resource from the database.</p>
+<p>In order to maintain a clear separation of responsibilities this method
+delegates the execution to the corresponding method from
+:py:class:<a href="#id5"><span class="problematic" id="id6">`</span></a>ResourceRepo’ and returns the result</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_id</strong> (<em>int</em>) – Id of the resource to be retrieved</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary with the format provided bellow or None if the resource with target
+id does not exist.<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">resource_id</span></code>: id of the resource (int)</li>
+<li><code class="docutils literal notranslate"><span class="pre">goal_id</span></code>: id of the goal to which this resource was attached (int)</li>
+<li><code class="docutils literal notranslate"><span class="pre">user_id</span></code>: id of the user who posted this resource (int)</li>
+<li><code class="docutils literal notranslate"><span class="pre">title</span></code>: resource’s title (string)</li>
+<li><code class="docutils literal notranslate"><span class="pre">link</span></code>: location of the resource provided as web URL (string)</li>
+<li><code class="docutils literal notranslate"><span class="pre">topic</span></code>: resource’s topic (string)</li>
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code>: resource’s description (string)</li>
+<li><code class="docutils literal notranslate"><span class="pre">required_time</span></code>: number of minutes to assimilate the resource (int)</li>
+<li><code class="docutils literal notranslate"><span class="pre">rating</span></code>: resource’s rating (float)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.get_resources">
+<code class="descname">get_resources</code><span class="sig-paren">(</span><em>goal_id=None</em>, <em>user_id=None</em>, <em>number_of_resource=None</em>, <em>max_length=None</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.get_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all the resources in the database filtered by the
+conditions provided in the parameters.</p>
+<p>In order to maintain a clear separation of responsibilities this method
+delegates the execution to the corresponding method from
+:py:class:<a href="#id7"><span class="problematic" id="id8">`</span></a>ResourceRepo’ and returns the result</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>goal_id</strong> (<em>int</em>) – Default is None. Search resources of the goal with the given goal_id.
+If this parameter is None, it returns the resources of
+all the goals in the system.</li>
+<li><strong>user_id</strong> (<em>int</em>) – Default is None. Search resources of the user with the given user_id.
+If this parameter is None, it returns the resources of
+all the users in the system.</li>
+<li><strong>number_of_resource</strong> (<em>int</em>) – Default is None. Sets the maximum number of resources to return
+in the list. If set to None, there is no limit.</li>
+<li><strong>max_length</strong> (<em>int</em>) – Default is None. All resources with a required time to complete greater
+than max_length are removed. If is set to None, this
+condition is not applied</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>A list of resources. Each resource is a dictionary of items with the
+following format</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">resource_id</span></code>: id of the resource (int)</li>
+<li><code class="docutils literal notranslate"><span class="pre">title</span></code>: resource’s title (string)</li>
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code>: resource’s description (string)</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.get_user">
+<code class="descname">get_user</code><span class="sig-paren">(</span><em>user_id=None</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.get_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts all the information of a user by user_id or nickname.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_id</strong> (<em>integer</em>) – The unique id of the user to search for, default None.</li>
+<li><strong>nickname</strong> (<em>string</em>) – The nickname of the user to search for, default None.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dictionary with the format provided in the method:
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_create_user_object()</span></code>. None is returned if the database
+has no users with given user_id.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.get_user_id">
+<code class="descname">get_user_id</code><span class="sig-paren">(</span><em>nickname</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.get_user_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the user_id of the user with the given
+nickname.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nickname</strong> (<em>str</em>) – The nickname of the user to search.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the database attribute user_id or None if <code class="docutils literal notranslate"><span class="pre">nickname</span></code> does
+not exist in the database.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.get_user_public">
+<code class="descname">get_user_public</code><span class="sig-paren">(</span><em>user_id=None</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.get_user_public" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts public information of a user by the user_id or nickname</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_id</strong> (<em>integer</em>) – The unique ID of the user, default None.</li>
+<li><strong>nickname</strong> (<em>string</em>) – The nickname of the user to search for, default None.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">user data dictionary with the format provided in the method:
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_create_user_list_object()</span></code>. None is returned if the database
+has no users with given nickname.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.get_users">
+<code class="descname">get_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.get_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts all users in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of Users of the database. Each user is a dictionary
+with the format provided in the method:
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_create_user_list_object()</span></code>.
+None is returned if the database has no users.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.isclosed">
+<code class="descname">isclosed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.isclosed" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if connection has already being closed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.modify_goal">
+<code class="descname">modify_goal</code><span class="sig-paren">(</span><em>goal_id</em>, <em>title=None</em>, <em>topic=None</em>, <em>description=None</em>, <em>deadline=None</em>, <em>status=None</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.modify_goal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the title, the topic, the description, the status, and the
+deadline of the goal with id <code class="docutils literal notranslate"><span class="pre">goal_id</span></code>. An individual field can be
+modified by setting the rest as None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>goal_id</strong> (<em>int</em>) – the id of the goal to remove.</li>
+<li><strong>title</strong> (<em>str</em>) – default None. The goal’s title</li>
+<li><strong>topic</strong> (<em>str</em>) – default None. The goal’s topic</li>
+<li><strong>description</strong> (<em>str</em>) – default None. The goal’s description</li>
+<li><strong>deadline</strong> (<em>int</em>) – default None. The goal’s deadline</li>
+<li><strong>status</strong> (<em>int</em>) – default None. The goal’s status</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the id of the edited goal or None if the goal was
+not found.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.modify_resource">
+<code class="descname">modify_resource</code><span class="sig-paren">(</span><em>resource_id</em>, <em>rating</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.modify_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the rating of the resource with id <code class="docutils literal notranslate"><span class="pre">resource_id</span></code></p>
+<p>In order to maintain a clear separation of responsibilities this method
+delegates the execution to the corresponding method from
+:py:class:<a href="#id9"><span class="problematic" id="id10">`</span></a>ResourceRepo’ and returns the result</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource_id</strong> (<em>int</em>) – The id of the resource to modify.</li>
+<li><strong>rating</strong> (<em>float</em>) – The resource’s rating</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The id of the modified resource or None. None is returned
+if the resource was not found or if the rating parameter is
+not a float value.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.modify_user">
+<code class="descname">modify_user</code><span class="sig-paren">(</span><em>user_id</em>, <em>r_profile</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.modify_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the information of a user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_id</strong> (<em>int</em>) – The unique ID of the user to modify</li>
+<li><strong>r_profile</strong> (<em>dict</em>) – <p>a dictionary with the restricted information + website(public)
+to be modified. The dictionary has the following structure:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>{&#39;password&#39;:&#39;&#39;,firstname&#39;:&#39;&#39;,&#39;lastname&#39;:&#39;&#39;,
+&#39;email&#39;:&#39;&#39;, &#39;age&#39;:&#39;&#39;,&#39;gender&#39;:&#39;&#39;,&#39;website&#39;:&#39;&#39;}
+</pre></div>
+</div>
+<p>where:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">password</span></code>: new passowrd of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">firstanme</span></code>: new given name of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">lastname</span></code>: new family name of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">email</span></code>: new email of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">age</span></code>: new age of the user (integer).</li>
+<li><code class="docutils literal notranslate"><span class="pre">gender</span></code>: new gender information of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">website</span></code>: new user’s personal web URL (string).</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the user_id of the modified user or None if the
+<code class="docutils literal notranslate"><span class="pre">user_id</span></code> passed is not in the database.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.set_foreign_keys_support">
+<code class="descname">set_foreign_keys_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.set_foreign_keys_support" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the support for foreign keys.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if operation succeed and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.connection.Connection.unset_foreign_keys_support">
+<code class="descname">unset_foreign_keys_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.connection.Connection.unset_foreign_keys_support" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deactivate the support for foreign keys.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if operation succeed and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="db.html"
+                        title="previous chapter">db package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="db.engine.html"
+                        title="next chapter">db.engine module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/db.connection.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="db.engine.html" title="db.engine module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="db.html" title="db package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Goalz API 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="db.html" >db package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Aleksandar Zivkovic, Alfitra Rahman, Chouaib Hamek, Daniel Toniuc.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.1.
+    </div>
+  </body>
+</html>

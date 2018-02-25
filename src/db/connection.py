@@ -234,6 +234,9 @@ class Connection(object):
 
     def contains_user(self, nickname):
         '''
+        Check whether the nickname is exist in the database.
+        
+        :param str nickname: The nickname of the user
         :return: True if the user is in the database. False otherwise
         '''
         self.set_foreign_keys_support()
