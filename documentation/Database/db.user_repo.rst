@@ -1,7 +1,7 @@
 db.user\_repo module
 ====================
 
-.. autoclass:: src.db.UserRepo
+.. autoclass:: src.db.user_repo.UserRepo
     :members:
     :undoc-members:
     :show-inheritance:

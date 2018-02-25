@@ -38,6 +38,214 @@
             
   <div class="section" id="db-user-repo-module">
 <h1>db.user_repo module<a class="headerlink" href="#db-user-repo-module" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.db.user_repo.UserRepo">
+<em class="property">class </em><code class="descclassname">src.db.user_repo.</code><code class="descname">UserRepo</code><span class="sig-paren">(</span><em>con</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.user_repo.UserRepo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Methods to manipulate “user” table in the Goalz database</p>
+<p>The sqlite3 connection instance is received as a constructor parameter and
+is accessible to all the methods of this class through the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">self.con</span></code> attribute.</p>
+<p>Methods of this class <strong>MUST</strong> not be accessed directly. All the calls to
+the database should be made through the API provided by <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>con</strong> (<em>sqlite3.Connection</em>) – Connection to an SqlLite database</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="src.db.user_repo.UserRepo.contains_user">
+<code class="descname">contains_user</code><span class="sig-paren">(</span><em>nickname</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.user_repo.UserRepo.contains_user" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the user is in the database. False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.user_repo.UserRepo.create_user">
+<code class="descname">create_user</code><span class="sig-paren">(</span><em>nickname</em>, <em>new_user</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.user_repo.UserRepo.create_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new user in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nickname</strong> (<em>str</em>) – The nickname of the user to modify</li>
+<li><strong>user</strong> (<em>dict</em>) – <p>a dictionary with the new user information. The
+dictionary has the following structure:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>{&#39;firstname&#39;:&#39;&#39;,&#39;lastname&#39;:&#39;&#39;,
+ &#39;email&#39;:&#39;&#39;, &#39;password:&#39;&#39;,&#39;age&#39;:&#39;&#39;,&#39;gender&#39;:&#39;&#39;,
+ &#39;website&#39;:&#39;&#39;}
+</pre></div>
+</div>
+<p>where:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">firstname</span></code>: given name of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">lastname</span></code>: family name of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">email</span></code>: email of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">password</span></code>: given password of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">age</span></code>: user’s age (integer).</li>
+<li><code class="docutils literal notranslate"><span class="pre">gender</span></code>: user’s gender. Can be None (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">webiste</span></code>: user’s personal web URL. Can be None (string).</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the nickname of the modified user or None if the
+<code class="docutils literal notranslate"><span class="pre">nickname</span></code> passed as parameter is already in the database.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.user_repo.UserRepo.delete_user">
+<code class="descname">delete_user</code><span class="sig-paren">(</span><em>user_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.user_repo.UserRepo.delete_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all information of the user with the user_id passed in as
+argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user_id</strong> (<em>integer</em>) – The unique ID of the user to remove.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the user is deleted, False otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.user_repo.UserRepo.get_user">
+<code class="descname">get_user</code><span class="sig-paren">(</span><em>user_id</em>, <em>nickname</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.user_repo.UserRepo.get_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts all the information of a user by user_id or nickname.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_id</strong> (<em>integer</em>) – The unique id of the user to search for, default None.</li>
+<li><strong>nickname</strong> (<em>string</em>) – The nickname of the user to search for, default None.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dictionary with the format provided in the method:
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_create_user_object()</span></code>. None is returned if the database
+has no users with given user_id.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.user_repo.UserRepo.get_user_id">
+<code class="descname">get_user_id</code><span class="sig-paren">(</span><em>nickname</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.user_repo.UserRepo.get_user_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the user_id of the user with the given
+nickname.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nickname</strong> (<em>str</em>) – The nickname of the user to search.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the database attribute user_id or None if <code class="docutils literal notranslate"><span class="pre">nickname</span></code> does
+not exist in the database.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.user_repo.UserRepo.get_user_public">
+<code class="descname">get_user_public</code><span class="sig-paren">(</span><em>user_id</em>, <em>nickname</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.user_repo.UserRepo.get_user_public" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts public information of a user by the user_id or nickname</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_id</strong> (<em>integer</em>) – The unique ID of the user, default None.</li>
+<li><strong>nickname</strong> (<em>string</em>) – The nickname of the user to search for, default None.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dictionary with the format provided in the method:
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_create_user_list_object()</span></code>. None is returned if the database
+has no users with given nickname.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.user_repo.UserRepo.get_users">
+<code class="descname">get_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.db.user_repo.UserRepo.get_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts all users in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of Users of the database. Each user is a dictionary
+with the format provided in the method:
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_create_user_list_object()</span></code>.
+None is returned if the database has no users.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.user_repo.UserRepo.modify_user">
+<code class="descname">modify_user</code><span class="sig-paren">(</span><em>user_id</em>, <em>r_profile</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.user_repo.UserRepo.modify_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the information of a user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_id</strong> (<em>int</em>) – The unique ID of the user to modify</li>
+<li><strong>r_profile</strong> (<em>dict</em>) – <p>a dictionary with the restricted informtion + website(public)
+to be modified. The dictionary has the following structure:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>{&#39;password&#39;:&#39;&#39;,firstname&#39;:&#39;&#39;,&#39;lastname&#39;:&#39;&#39;,
+&#39;email&#39;:&#39;&#39;, &#39;age&#39;:&#39;&#39;,&#39;gender&#39;:&#39;&#39;,&#39;website&#39;:&#39;&#39;}
+</pre></div>
+</div>
+<p>where:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">password</span></code>: new passowrd of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">firstanme</span></code>: new given name of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">lastname</span></code>: new family name of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">email</span></code>: new email of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">age</span></code>: new age of the user (integer).</li>
+<li><code class="docutils literal notranslate"><span class="pre">gender</span></code>: new gender information of the user (string).</li>
+<li><code class="docutils literal notranslate"><span class="pre">website</span></code>: new user’s personal web URL (string).</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the user_id of the modified user or None if the
+<code class="docutils literal notranslate"><span class="pre">user_id</span></code> passed is not in the database.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

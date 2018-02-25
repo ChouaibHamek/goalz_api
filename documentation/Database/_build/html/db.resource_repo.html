@@ -42,6 +42,145 @@
             
   <div class="section" id="db-resource-repo-module">
 <h1>db.resource_repo module<a class="headerlink" href="#db-resource-repo-module" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.db.resource_repo.ResourceRepo">
+<em class="property">class </em><code class="descclassname">src.db.resource_repo.</code><code class="descname">ResourceRepo</code><span class="sig-paren">(</span><em>con</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.resource_repo.ResourceRepo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Methods to manipulate “resource” table in the Goalz database</p>
+<p>The sqlite3 connection instance is received as a constructor parameter and
+is accessible to all the methods of this class through the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">self.con</span></code> attribute.</p>
+<p>Methods of this class <strong>MUST</strong> not be accessed directly. All the calls to
+the database should be made through the API provided by <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>con</strong> (<em>sqlite3.Connection</em>) – Connection to an SqlLite database</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="src.db.resource_repo.ResourceRepo.create_resource">
+<code class="descname">create_resource</code><span class="sig-paren">(</span><em>goal_id</em>, <em>user_id</em>, <em>title</em>, <em>link</em>, <em>topic</em>, <em>description</em>, <em>required_time</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.resource_repo.ResourceRepo.create_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new resource with the data provided as arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>goal_id</strong> (<em>int</em>) – Id of the goal for which the resource was posted</li>
+<li><strong>user_id</strong> (<em>int</em>) – Id of the user who posted the resource</li>
+<li><strong>title</strong> (<em>str</em>) – The title of the resource</li>
+<li><strong>link</strong> (<em>str</em>) – The resource’s web URL</li>
+<li><strong>topic</strong> (<em>str</em>) – The topic of the resource provided as text</li>
+<li><strong>description</strong> (<em>str</em>) – The description of the request</li>
+<li><strong>description</strong> – Estimate of the number of minutes required
+to assimilate the resource</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the id of the created message or None. None is returned if
+the resource was not found, or the specified goal does not
+exists in the database, or the specified user does not
+exist in the database</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.resource_repo.ResourceRepo.delete_resource">
+<code class="descname">delete_resource</code><span class="sig-paren">(</span><em>resource_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.resource_repo.ResourceRepo.delete_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the resource with id given as parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_id</strong> (<em>int</em>) – Id of the resource to remove.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the resource has been deleted, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.resource_repo.ResourceRepo.get_resource">
+<code class="descname">get_resource</code><span class="sig-paren">(</span><em>resource_id</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.resource_repo.ResourceRepo.get_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a resource from the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_id</strong> (<em>int</em>) – Id of the resource to be retrieved</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary with the format provided in
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_create_message_object()</span></code> or None if the resource with target
+id does not exist.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.resource_repo.ResourceRepo.get_resources">
+<code class="descname">get_resources</code><span class="sig-paren">(</span><em>goal_id</em>, <em>user_id</em>, <em>number_of_resource</em>, <em>max_length</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.resource_repo.ResourceRepo.get_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all the resources in the database filtered by the
+conditions provided in the parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>goal_id</strong> (<em>int</em>) – Search resources of the goal with the given goal_id. 
+If this parameter is None, it returns the resources of
+all the goals in the system.</li>
+<li><strong>user_id</strong> (<em>int</em>) – Search resources of the user with the given user_id. 
+If this parameter is None, it returns the resources of
+all the users in the system.</li>
+<li><strong>number_of_resource</strong> (<em>int</em>) – Sets the maximum number of resources to return
+in the list. If set to None, there is no limit.</li>
+<li><strong>max_length</strong> (<em>int</em>) – All resources with a required time to complete greater
+than max_length are removed. If is set to None, this 
+condition is not applied</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of resources. Each resource is a dictionary of items as
+created by <code class="xref py py-meth docutils literal notranslate"><span class="pre">_create_message_object()</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.db.resource_repo.ResourceRepo.modify_resource">
+<code class="descname">modify_resource</code><span class="sig-paren">(</span><em>resource_id</em>, <em>rating</em><span class="sig-paren">)</span><a class="headerlink" href="#src.db.resource_repo.ResourceRepo.modify_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the rating of the resource with id <code class="docutils literal notranslate"><span class="pre">resource_id</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource_id</strong> (<em>int</em>) – The id of the resource to modify.</li>
+<li><strong>rating</strong> (<em>float</em>) – The resource’s rating</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The id of the modified resource or None. None is returned
+if the resource was not found or if the rating parameter is
+not a float value.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
