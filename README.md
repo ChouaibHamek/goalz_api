@@ -46,7 +46,7 @@ python -m scripts.run_full_test_suite
 ```
 
 Database tests
--------------
+--------------
 
 To test only some parts of the database api the following test files are provided:
 * database_api_tests_tables.py - test methods that manage database tables and database connection
@@ -61,3 +61,10 @@ python -m test.<test_file>
 ```
 	
 Where the placeholder <test_file> is replaced with the name of the file without the '.py' extension
+
+Documentation
+=============
+
+Database API
+------------
+Documenation of tha database API can be found in the "documentation/Database/_build/html/index.html" file
